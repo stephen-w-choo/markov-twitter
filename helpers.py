@@ -1,7 +1,6 @@
 import requests
 import json
 import markovify
-import nltk
 
 def lookup_username(headers, user_handle):
     # takes a user handle and returns the user id
