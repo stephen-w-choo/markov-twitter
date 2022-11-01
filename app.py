@@ -3,7 +3,7 @@ import requests
 import json
 import markovify
 from dotenv import load_dotenv
-from helpers import lookup_user_id, timeline_api_url, twitter_api_request, twitter_json_to_string, paginate
+from helpers import lookup_username, timeline_api_url, twitter_api_request, twitter_json_to_string, paginate
 import os
 
 load_dotenv()
@@ -13,7 +13,7 @@ headers = {
     'Authorization': os.getenv("AUTHORIZATION")
 }
 
-app = Flask(__name__, static_folder='../frontend/build', static_url_path='/')
+app = Flask(__name__, static_folder='/frontend/build', static_url_path='/')
 
 
 @app.route("/")
@@ -23,7 +23,10 @@ def index():
 @app.route("/markovify_user")
 def markovify_user():
     username = request.args.get('username')
-    user_id = lookup_user_id(headers, username)
+    user_data = lookup_username(headers, username)
+    user_id = user_data["id"]
+    name = user_data["name"]
+    profile_picture = user_data["profile_image_url"]
     url = timeline_api_url(user_id)
     api_response = twitter_api_request(payload, headers, url)
     full_list = paginate(api_response, headers, url)
@@ -33,9 +36,15 @@ def markovify_user():
 
     res = []
     for i in range(5):
-        res.append(text_model.make_sentence())
+        res.append(text_model.make_sentence(test_output=False))
 
-    return jsonify(res)
+    return jsonify({
+            "tweets": res,
+            "name": name,
+            "username": username,
+            "profile_image_url": profile_picture,
+            }
+        )
 
 # searches for username as /user?username=value
 

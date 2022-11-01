@@ -3,12 +3,12 @@ import json
 import markovify
 import nltk
 
-def lookup_user_id(headers, user_handle):
+def lookup_username(headers, user_handle):
     # takes a user handle and returns the user id
-    url = f"https://api.twitter.com/2/users/by/username/{user_handle}"
+    url = f"https://api.twitter.com/2/users/by/username/{user_handle}?user.fields=profile_image_url"
     response = requests.request("GET", url, headers=headers).json()
     print(response)
-    return response["data"]["id"]
+    return response["data"]
 
 def timeline_api_url(user_id):
     return f"https://api.twitter.com/2/users/{user_id}/tweets?max_results=100"
@@ -27,10 +27,8 @@ def twitter_api_request(payload, headers, url_request):
 def paginate(api_response, headers, url_request):
     # takes an api response and uses the next token to extend the list 4 times
     # returns the extended list
-
     current_list = api_response["data"]
     current_response = api_response
-
 
     for i in range(4):
         next_token = current_response["meta"]["next_token"]
