@@ -1,25 +1,56 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import requests
 import json
 import markovify
-from helpers import twitter_api_request, twitter_json_to_string
+from dotenv import load_dotenv
+from helpers import lookup_user_id, timeline_api_url, twitter_api_request, twitter_json_to_string, paginate
+import os
+
+load_dotenv()
 
 payload={}
 headers = {
-  'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAACzqiQEAAAAApOU5rbSXRCFlkKl6FbMBcYpWbRs%3DogC9gPfAXyBq6Hffg5fhpQim8EZJbQI2fk7GRv6UBFImQhmIWR',
-  'Cookie': 'guest_id=v1%3A166666185727187801; guest_id_ads=v1%3A166666185727187801; guest_id_marketing=v1%3A166666185727187801; personalization_id="v1_vk3g4XNi3QHBL4TtG9EzAA=="'
+    'Authorization': os.getenv("AUTHORIZATION")
 }
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend/build', static_url_path='/')
 
 
 @app.route("/")
 def index():
-    return "<p>Hello, World!</p>"
+    return app.send_static_file('index.html')
 
-@app.route("/user")
-# searches for username as /user?username=value 
-# and returns Markov model 
+@app.route("/markovify_user")
+def markovify_user():
+    username = request.args.get('username')
+    user_id = lookup_user_id(headers, username)
+    url = timeline_api_url(user_id)
+    api_response = twitter_api_request(payload, headers, url)
+    full_list = paginate(api_response, headers, url)
+    corpus = twitter_json_to_string(full_list)
+
+    text_model = markovify.Text(corpus)
+
+    res = []
+    for i in range(5):
+        res.append(text_model.make_sentence())
+
+    return jsonify(res)
+
+# searches for username as /user?username=value
+
+# and returns Markov model
+
+@app.route("/markovify_list")
+# calls the twitter list api
+
+# takes the json returned by the api and converts to a string
+
+# generates markov model from the generated string
+
+# generates 3 random tweets and returns as a list
+
+
 def username():
     username = request.args.get('username')
     url = f"https://api.twitter.com/2/tweets/search/recent?query=from:{username}&max_results=100"
