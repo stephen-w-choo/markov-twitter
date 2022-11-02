@@ -55,7 +55,7 @@ form button {
   display: inline-block;
   background-color: #e6ecf0;
   color: black;
-  width: max(600px, 100vw);
+  width: min(600px, 90vw);
   text-align: left;
   font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
   font-size: 12px;
