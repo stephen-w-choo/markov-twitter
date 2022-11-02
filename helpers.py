@@ -6,8 +6,7 @@ def lookup_username(headers, user_handle):
     # takes a user handle and returns the user id
     url = f"https://api.twitter.com/2/users/by/username/{user_handle}?user.fields=profile_image_url"
     response = requests.request("GET", url, headers=headers).json()
-    print(response)
-    return response["data"]
+    return response
 
 def timeline_api_url(user_id):
     return f"https://api.twitter.com/2/users/{user_id}/tweets?max_results=100"

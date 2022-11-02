@@ -22,11 +22,17 @@ function UserForm(props) {
     displayTweets({
       tweets: ["Markovifying and generating tweets..."],
     })
+
     fetch(`/markovify_user?username=${query.username}`)
     .then(response => response.json())
     .then( (response) => {
       console.log(response)
       displayTweets(response)
+    })
+    .catch( (error) => {
+      displayTweets({
+        tweets: ["Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"],
+      })
     })
   }
 
@@ -36,6 +42,7 @@ function UserForm(props) {
         <h3>Enter a twitter username</h3>
         <input
           type = "text"
+          id = "search-input"
           name = "username"
           placeholder = "username eg BarackObama, JoeRogan"
           value = {query.username}
@@ -95,9 +102,11 @@ function App() {
         <h1>Markov Caricatures</h1>
         <img className="logo" src={ require('./images/AAMarkov.jpg') } alt="logo" />
         <h6>Andrey Markov</h6>
+        <br></br>
         <p> Enter a twitter username to generate random semi-plausible new tweets for the given user. </p>
         <p> The random tweets are generated from a Markov model based on the user's existing tweets. </p>
         <p> Made using jsvine's Markovify library. </p>
+        <br></br>
         <UserForm
           changeTweets={changeTweets}
           />

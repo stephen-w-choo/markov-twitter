@@ -24,6 +24,12 @@ def index():
 def markovify_user():
     username = request.args.get('username')
     user_data = lookup_username(headers, username)
+
+    if "errors" in user_data:
+        print("error")
+        return 500
+
+    user_data = user_data["data"]
     user_id = user_data["id"]
     name = user_data["name"]
     profile_picture = user_data["profile_image_url"]

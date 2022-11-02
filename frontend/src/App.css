@@ -28,11 +28,34 @@ h6 {
   margin: 0px;
 }
 
+form h3 {
+  margin: 20px;
+}
+
+form #search-input {
+  height: 40px;
+  border-radius: 20px;
+  border-width: 1px;
+  padding-left: 20px;
+  width: 60%;
+}
+
+form button {
+  height: 40px;
+  padding: 0px 20px;
+  margin: 20px;
+  text-align: center;
+  border: 1px solid #205d96;
+  background-color: #2c7ecc;
+  color: white;
+  border-radius: 5px;
+}
+
 .twitter-tweet {
   display: inline-block;
   background-color: #e6ecf0;
   color: black;
-  width: 600px;
+  width: max(600px, 100vw);
   text-align: left;
   font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
   font-size: 12px;
