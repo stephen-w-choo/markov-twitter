@@ -44,11 +44,11 @@ function UserForm(props) {
           type = "text"
           id = "search-input"
           name = "username"
-          placeholder = "username eg BarackObama, JoeRogan"
+          placeholder = "username eg BarackObama, AlboMP"
           value = {query.username}
           onChange = {handleChange}
         />
-        <button> Markovify! </button>
+        <button> <i className="fa-brands fa-twitter"></i> Generate tweets </button>
       </form>
     </div>
   )
@@ -99,7 +99,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Markov Caricatures</h1>
+        <h1>Twitter Caricatures</h1>
         <img className="logo" src={ require('./images/AAMarkov.jpg') } alt="logo" />
         <h6>Andrey Markov</h6>
         <br></br>
