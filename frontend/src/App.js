@@ -1,5 +1,48 @@
 import './App.css';
 import { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+
+library.add(fab)
+
+// function GenerateTweetsButton(props) {
+//   // takes a response from the markovify_user api and displays the user details and background of the tweets
+//   // has a button to generate tweets from the model
+//   // props needs to include:
+//   // changeTweets function
+//   // api_response json object
+
+//   const generateTweets = (event) => {
+//     event.preventDefault();
+//     props.changeTweets({
+//       tweets: ["Markovifying and generating tweets..."],
+//     })
+//     fetch("/generate_tweets", {
+//       method: 'POST', // *GET, POST, PUT, DELETE, etc.
+//       body: props.api_response
+//     })
+//     .then(response => response.json())
+//     .then( (response) => {
+//       console.log(response)
+//       props.changeTweets(response)
+//     })
+//     .catch( (error) => {
+//       props.changeTweets({
+//         tweets: ["Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"],
+//       })
+//     })
+//   }
+
+//   return(
+//     <button
+//       onClick={generateTweets}></button>
+//   )
+// }
+
+
+
+
 
 function UserForm(props) {
   const [query, setQuery] = useState({
@@ -12,25 +55,22 @@ function UserForm(props) {
       username: event.target.value})
   }
 
-  const displayTweets = (tweets) => {
-    props.changeTweets(tweets)
-  }
-
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(query)
-    displayTweets({
-      tweets: ["Markovifying and generating tweets..."],
+    props.changeTweets({
+      tweets: ["Collecting tweets and generating model"],
     })
 
     fetch(`/markovify_user?username=${query.username}`)
     .then(response => response.json())
     .then( (response) => {
       console.log(response)
-      displayTweets(response)
+      props.setUser(response)
+      props.resetTweets()
     })
     .catch( (error) => {
-      displayTweets({
+      props.changeTweets({
         tweets: ["Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"],
       })
     })
@@ -48,7 +88,7 @@ function UserForm(props) {
           value = {query.username}
           onChange = {handleChange}
         />
-        <button> <i className="fa-brands fa-twitter"></i> Generate tweets </button>
+        <button> <FontAwesomeIcon icon={['fab', 'twitter']} /> Generate tweets </button>
       </form>
     </div>
   )
@@ -59,10 +99,10 @@ function TweetBox(props) {
   return (
     <div className="twitter-tweet">
       <div className="tweet-header">
-        <img src={props.state.tweeterAvatar} alt = "" ></img>
+        <img src={props.state.userProfilePicture} alt = "" ></img>
         <div className="tweeter-name-box">
-          <div>{props.state.tweeter}</div>
-          <div className="tweeter-username">{props.state.tweeterHandle && `@${props.state.tweeterHandle}`}</div>
+          <div>{props.state.user}</div>
+          <div className="tweeter-username">{props.state.userHandle && `@${props.state.userHandle}`}</div>
         </div>
       </div>
       <p>
@@ -82,19 +122,43 @@ function TweetDisplayArea(props) {
   )
 }
 
+function ModelDisplayArea(props) {
+  return (
+    <div className="model-display-area">
+      <p> {props.state.user} </p>
+      <img src={props.state.userProfilePicture} alt = "" ></img>
+    </div>
+  )
+}
+
 function App() {
   const [state, setState] = useState({
+    user: null,
+    userHandle: null,
+    userProfilePicture: null,
+    currentModel: null, // unsure - storing the markov model in the state is probably a bit much - would be better in the session storage
     tweets: [],
-    tweeterAvatar: ""
+  })
+
+  const setUser = (response) => setState( {
+    ...state,
+    user: response.name,
+    userHandle: response.username,
+    userProfilePicture: response.userProfilePicture,
+    currentModel: response.currentModel,
   })
 
   const changeTweets = (response) => setState( {
     ...state,
     tweets: response.tweets,
-    tweeterHandle: response.username,
-    tweeter: response.name,
-    tweeterAvatar: response.profile_image_url
   })
+
+  const resetTweets = () => setState( {
+    ...state,
+    tweets: [],
+  })
+
+
 
   return (
     <div className="App">
@@ -108,9 +172,15 @@ function App() {
         <p> Made using jsvine's Markovify library. </p>
         <br></br>
         <UserForm
+          setUser={setUser}
+          resetTweets={resetTweets}
           changeTweets={changeTweets}
           />
         <TweetDisplayArea state = {state} />
+        {
+          state.user && <ModelDisplayArea state={state} /> // display the model if the user has been set
+        }
+
       </header>
     </div>
   );
