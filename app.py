@@ -3,9 +3,10 @@ import requests
 import json
 import markovify
 from dotenv import load_dotenv
-from api_helpers import lookup_username, timeline_api_url, twitter_api_request, twitter_json_to_string, paginate
-from language_helpers import filter
+import twitter_api_helpers
+import language_helpers
 import os
+from flask_cors import CORS, cross_origin
 
 load_dotenv()
 
@@ -16,15 +17,20 @@ headers = {
 
 application = app = Flask(__name__, static_folder='frontend/build', static_url_path='/')
 
+CORS(app)
+
 
 @app.route("/")
 def index():
     return app.send_static_file('index.html')
 
+# returns a Markov model in json format
 @app.route("/markovify_user")
+@cross_origin() # to be removed after development
 def markovify_user():
     username = request.args.get('username')
-    user_data = lookup_username(headers, username)
+
+    user_data = twitter_api_helpers.lookup_username(headers, username)
 
     if "errors" in user_data:
         print("error")
@@ -32,49 +38,35 @@ def markovify_user():
 
     user_data = user_data["data"]
     user_id = user_data["id"]
-    name = user_data["name"]
-    profile_picture = user_data["profile_image_url"]
-    url = timeline_api_url(user_id)
-    api_response = twitter_api_request(payload, headers, url)
-    full_list = paginate(api_response, headers, url)
-    corpus = twitter_json_to_string(full_list)
+    url = twitter_api_helpers.timeline_url(user_id)
+    api_response = twitter_api_helpers.request(payload, headers, url)
+    full_list = twitter_api_helpers.paginate(api_response, headers, url)
+    corpus = twitter_api_helpers.twitter_json_to_string(full_list)
+    corpus = language_helpers.filter(corpus)
 
-    corpus = filter(corpus)
-    print(corpus)
+    text_model = markovify.Text(corpus, retain_original=False)
 
-    text_model = markovify.Text(corpus)
+    model_json = text_model.to_json()
 
-    res = []
-    for i in range(5):
-        res.append(text_model.make_sentence(test_output=False))
-
-    return jsonify({
-            "tweets": res,
-            "name": name,
+    return jsonify(
+        {
+            "model": model_json,
+            "name": user_data["name"],
             "username": username,
-            "profile_image_url": profile_picture,
+            "userProfilePicture": user_data["profile_image_url"],
             }
         )
 
-# searches for username as /user?username=value
+@app.route("/generate_tweets", methods=["GET", "POST"])
+@cross_origin() # to be removed after development
+# takes a markov model in json format and generates 5 random tweets
+def generate_tweets():
+    if request.method == 'POST':
+        res = []
+        text_model = markovify.Text.from_json(request.get_json())
+        for i in range(5):
+            res.append(text_model.make_sentence())
 
-# and returns Markov model
-
-@app.route("/markovify_list")
-# calls the twitter list api
-
-# takes the json returned by the api and converts to a string
-
-# generates markov model from the generated string
-
-# generates 3 random tweets and returns as a list
-
-
-def username():
-    username = request.args.get('username')
-    url = f"https://api.twitter.com/2/tweets/search/recent?query=from:{username}&max_results=100"
-    api_response = twitter_api_request(payload, headers, url)
-    corpus = twitter_json_to_string(api_response)
-    text_model = markovify.Text(corpus)
-
-    return(text_model.make_sentence())
+        return jsonify({
+            "tweets": res
+        })

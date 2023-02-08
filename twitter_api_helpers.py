@@ -23,12 +23,12 @@ def request(payload, headers, url_request):
 
 
 def paginate(api_response, headers, url_request):
-    # takes an api response and uses the next token to extend the list 4 times
+    # takes an api response and uses the next token to extend the list 1 times
     # returns the extended list
     current_list = api_response["data"]
     current_response = api_response
 
-    for i in range(4):
+    for i in range(1):
         next_token = current_response["meta"]["next_token"]
         if not next_token:
             break

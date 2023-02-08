@@ -4,45 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 
+
+
 library.add(fab)
-
-// function GenerateTweetsButton(props) {
-//   // takes a response from the markovify_user api and displays the user details and background of the tweets
-//   // has a button to generate tweets from the model
-//   // props needs to include:
-//   // changeTweets function
-//   // api_response json object
-
-//   const generateTweets = (event) => {
-//     event.preventDefault();
-//     props.changeTweets({
-//       tweets: ["Markovifying and generating tweets..."],
-//     })
-//     fetch("/generate_tweets", {
-//       method: 'POST', // *GET, POST, PUT, DELETE, etc.
-//       body: props.api_response
-//     })
-//     .then(response => response.json())
-//     .then( (response) => {
-//       console.log(response)
-//       props.changeTweets(response)
-//     })
-//     .catch( (error) => {
-//       props.changeTweets({
-//         tweets: ["Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"],
-//       })
-//     })
-//   }
-
-//   return(
-//     <button
-//       onClick={generateTweets}></button>
-//   )
-// }
-
-
-
-
 
 function UserForm(props) {
   const [query, setQuery] = useState({
@@ -58,21 +22,28 @@ function UserForm(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(query)
-    props.changeTweets({
-      tweets: ["Collecting tweets and generating model"],
-    })
+    props.showMessage("Collecting tweets and generating model")
 
-    fetch(`/markovify_user?username=${query.username}`)
-    .then(response => response.json())
+    fetch(
+      `http://localhost:5000/markovify_user?username=${query.username}`,
+      {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+      }
+    )
+    .then( (response) => {
+      console.log(response)
+      return response.json()
+    })
     .then( (response) => {
       console.log(response)
       props.setUser(response)
-      props.resetTweets()
     })
     .catch( (error) => {
-      props.changeTweets({
-        tweets: ["Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"],
-      })
+      console.log(error)
+      props.showMessage(
+        "Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"
+      )
     })
   }
 
@@ -95,7 +66,6 @@ function UserForm(props) {
 }
 
 function TweetBox(props) {
-  console.log(props)
   return (
     <div className="twitter-tweet">
       <div className="tweet-header">
@@ -115,8 +85,8 @@ function TweetBox(props) {
 function TweetDisplayArea(props) {
   return (
     <div className="tweet-display-area">
-      {props.state.tweets.map( (tweet) => {
-        return <TweetBox state={props.state} tweet={tweet}/>
+      {props.state.tweets.map( (tweet, index) => {
+        return <TweetBox state={props.state} tweet={tweet} key={index}/>
       })}
     </div>
   )
@@ -127,9 +97,56 @@ function ModelDisplayArea(props) {
     <div className="model-display-area">
       <p> {props.state.user} </p>
       <img src={props.state.userProfilePicture} alt = "" ></img>
+      <GenerateTweetsButton model={props.state.currentModel} changeTweets={props.changeTweets} />
     </div>
   )
 }
+
+function GenerateTweetsButton(props) {
+  // takes a response from the markovify_user api and displays the user details and background of the tweets
+  // has a button to generate tweets from the model
+  // props needs to include:
+  // changeTweets function
+  // api_response json object
+
+  const generateTweets = (event) => {
+    event.preventDefault();
+    console.log(event)
+    props.changeTweets({
+      tweets: ["Markovifying and generating tweets..."],
+    })
+    console.log(JSON.stringify(["test"]))
+    fetch("http://localhost:5000/generate_tweets", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(props.model)
+      // body: JSON.stringify(["test"])
+    })
+    .then(response => {
+      console.log(response)
+      return response.json()
+    })
+    .then( (response) => {
+      console.log(response)
+      props.changeTweets(response)
+    })
+    .catch( (error) => {
+      props.changeTweets({
+        tweets: ["Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"],
+      })
+    })
+  }
+
+  return(
+    <button
+      onClick={generateTweets}> Generate Tweets
+      </button>
+  )
+}
+
 
 function App() {
   const [state, setState] = useState({
@@ -145,12 +162,22 @@ function App() {
     user: response.name,
     userHandle: response.username,
     userProfilePicture: response.userProfilePicture,
-    currentModel: response.currentModel,
+    currentModel: response.model,
+    tweets: []
   })
 
   const changeTweets = (response) => setState( {
     ...state,
     tweets: response.tweets,
+  })
+
+  const showMessage = (message) => setState( {
+    ...state,
+    user: null,
+    userHandle: null,
+    userProfilePicture: null,
+    currentModel: null,
+    tweets: [message],
   })
 
   const resetTweets = () => setState( {
@@ -174,13 +201,13 @@ function App() {
         <UserForm
           setUser={setUser}
           resetTweets={resetTweets}
-          changeTweets={changeTweets}
+          showMessage={showMessage}
           />
-        <TweetDisplayArea state = {state} />
-        {
-          state.user && <ModelDisplayArea state={state} /> // display the model if the user has been set
+        { state.user &&
+          <ModelDisplayArea state={state} changeTweets={changeTweets} /> &&
+          <GenerateTweetsButton model={state.currentModel} changeTweets={changeTweets} />
         }
-
+        <TweetDisplayArea state = {state} />
       </header>
     </div>
   );
