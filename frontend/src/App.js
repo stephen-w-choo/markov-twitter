@@ -94,7 +94,7 @@ function TweetDisplayArea(props) {
 
 function ModelDisplayArea(props) {
   return (
-    <div className="model-display-area">
+    <div className="model-display-area" style={{"width": "100%"}}>
       <p> {props.state.user} </p>
       <img src={props.state.userProfilePicture} alt = "" ></img>
       <GenerateTweetsButton model={props.state.currentModel} changeTweets={props.changeTweets} />
@@ -147,6 +147,24 @@ function GenerateTweetsButton(props) {
   )
 }
 
+function StartScreen(props) {
+  return (
+    <div className="start-screen">
+    <img className="logo" src={ require('./images/AAMarkov.jpg') } alt="logo" />
+      <h6>Andrey Markov</h6>
+      <br></br>
+      <p> Enter a twitter username to generate random semi-plausible new tweets for the given user. </p>
+      <p> The random tweets are generated from a Markov model based on the user's existing tweets. </p>
+      <p> Made using jsvine's Markovify library. </p>
+      <br></br>
+      <UserForm
+        setUser={props.setUser}
+        resetTweets={props.resetTweets}
+        showMessage={props.showMessage}
+      />
+    </div>
+  )
+}
 
 function App() {
   const [state, setState] = useState({
@@ -154,6 +172,8 @@ function App() {
     userHandle: null,
     userProfilePicture: null,
     currentModel: null, // unsure - storing the markov model in the state is probably a bit much - would be better in the session storage
+    modelSize: null,
+    modelDate: null,
     tweets: [],
   })
 
@@ -163,6 +183,8 @@ function App() {
     userHandle: response.username,
     userProfilePicture: response.userProfilePicture,
     currentModel: response.model,
+    modelSize: response.modelSize,
+    modelDate: response.modelDate,
     tweets: []
   })
 
@@ -191,21 +213,15 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Twitter Caricatures</h1>
-        <img className="logo" src={ require('./images/AAMarkov.jpg') } alt="logo" />
-        <h6>Andrey Markov</h6>
-        <br></br>
-        <p> Enter a twitter username to generate random semi-plausible new tweets for the given user. </p>
-        <p> The random tweets are generated from a Markov model based on the user's existing tweets. </p>
-        <p> Made using jsvine's Markovify library. </p>
-        <br></br>
-        <UserForm
-          setUser={setUser}
-          resetTweets={resetTweets}
-          showMessage={showMessage}
+        { !state.user &&
+          <StartScreen
+            setUser={setUser}
+            resetTweets={resetTweets}
+            showMessage={showMessage}
           />
+        }
         { state.user &&
-          <ModelDisplayArea state={state} changeTweets={changeTweets} /> &&
-          <GenerateTweetsButton model={state.currentModel} changeTweets={changeTweets} />
+          <ModelDisplayArea state={state} changeTweets={changeTweets} />
         }
         <TweetDisplayArea state = {state} />
       </header>

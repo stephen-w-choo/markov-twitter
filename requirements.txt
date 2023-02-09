@@ -10,3 +10,4 @@ markovify==0.9.4
 python-dotenv==0.21.0
 requests==2.25.1
 Werkzeug==2.1.0
+flask_cors==3.0.10

@@ -28,29 +28,30 @@ def index():
 @app.route("/markovify_user")
 @cross_origin() # to be removed after development
 def markovify_user():
+    # look up the user from the twitter API
     username = request.args.get('username')
+    user_api_response = twitter_api_helpers.lookup_username(headers, username)
 
-    user_data = twitter_api_helpers.lookup_username(headers, username)
-
-    if "errors" in user_data:
+    # returns error if the user is not found
+    if "errors" in user_api_response:
         print("error")
         return 500
 
-    user_data = user_data["data"]
-    user_id = user_data["id"]
-    url = twitter_api_helpers.timeline_url(user_id)
-    api_response = twitter_api_helpers.request(payload, headers, url)
-    full_list = twitter_api_helpers.paginate(api_response, headers, url)
-    corpus = twitter_api_helpers.twitter_json_to_string(full_list)
+    # get the user data and id
+    user_data = user_api_response["data"]
+    user_id = user_api_response["id"]
+
+    # get the corpus, to be returned as a json object
+    corpus, model_size, model_date= twitter_api_helpers.twitter_user_to_corpus(user_id, headers, payload, 1)
     corpus = language_helpers.filter(corpus)
-
     text_model = markovify.Text(corpus, retain_original=False)
-
     model_json = text_model.to_json()
 
     return jsonify(
         {
             "model": model_json,
+            "modelSize": model_size,
+            "modelDate": model_date,
             "name": user_data["name"],
             "username": username,
             "userProfilePicture": user_data["profile_image_url"],
