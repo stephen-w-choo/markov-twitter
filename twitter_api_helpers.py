@@ -1,8 +1,9 @@
 import requests
 import json
 import markovify
+from datetime import datetime
 
-def lookup_username(headers: str, user_handle: str) -> str:
+def lookup_username(headers: str, user_handle: str) -> dict:
     # takes a user handle and returns the user id
     url = f"https://api.twitter.com/2/users/by/username/{user_handle}?user.fields=profile_image_url"
     response = requests.request("GET", url, headers=headers).json()
@@ -23,12 +24,12 @@ def request(payload: dict, headers: dict, url_request: str) -> dict:
 
 
 def paginate(api_response: dict, headers: dict, url_request: dict, pages: int) -> list:
-    # takes an api response and uses the next token to extend the list 1 times
+    # takes an api response and uses the next token to extend the list n number of times
     # returns the extended list
     current_list = api_response["data"]
     current_response = api_response
 
-    for i in range(pages):
+    for i in range(pages - 1):
         next_token = current_response["meta"]["next_token"]
         if not next_token:
             break
@@ -53,7 +54,10 @@ def twitter_json_to_string(list_of_tweet_objects: list) -> tuple[str, int, str]:
     for object in list_of_tweet_objects:
         text.append(object["text"])
 
-    return ("\n".join(text), n_tweets, f"{list_of_tweet_objects[0]['created_at']} - {list_of_tweet_objects[-1]['created_at']}")
+    startdate = datetime.strptime(list_of_tweet_objects[-1]["created_at"], "%Y-%m-%dT%H:%M:%S.%fZ")
+    enddate = datetime.strptime(list_of_tweet_objects[0]["created_at"], "%Y-%m-%dT%H:%M:%S.%fZ")
+
+    return ("\n".join(text), n_tweets, f"{startdate.strftime('%d-%m-%Y')} to {enddate.strftime('%d-%m-%Y')}")
 
 def twitter_user_to_corpus(user_id, headers, payload, tweet_pages=4) -> tuple[str, int, str]:
     # Takes a user id and returns a corpus of tweets as a string, will paginate 4 times by default

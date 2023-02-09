@@ -39,7 +39,7 @@ def markovify_user():
 
     # get the user data and id
     user_data = user_api_response["data"]
-    user_id = user_api_response["id"]
+    user_id = user_data["id"]
 
     # get the corpus, to be returned as a json object
     corpus, model_size, model_date= twitter_api_helpers.twitter_user_to_corpus(user_id, headers, payload, 1)

@@ -1,8 +1,10 @@
 import './App.css';
+import './start.css';
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
+import CountUp from 'react-countup';
 
 
 
@@ -94,10 +96,24 @@ function TweetDisplayArea(props) {
 
 function ModelDisplayArea(props) {
   return (
+
     <div className="model-display-area" style={{"width": "100%"}}>
-      <p> {props.state.user} </p>
-      <img src={props.state.userProfilePicture} alt = "" ></img>
-      <GenerateTweetsButton model={props.state.currentModel} changeTweets={props.changeTweets} />
+      <h3>
+        Markov model loaded for:
+      </h3>
+      <div className="twitter-tweet">
+        <div className="tweet-header">
+          <img src={props.state.userProfilePicture} alt = "" ></img>
+          <div className="tweeter-name-box">
+            <div>{props.state.user}</div>
+            <div className="tweeter-username">{props.state.userHandle && `@${props.state.userHandle}`}</div>
+          </div>
+        </div>
+        <p>
+          Markov model generated from <CountUp end={props.state.modelSize} duration={1}/> tweets from {props.state.modelDate}
+        </p>
+      </div>
+      <GenerateTweetsButton model={props.state.currentModel} changeTweets={props.changeTweets} generateTweets={props.generateTweets} />
     </div>
   )
 }
@@ -109,40 +125,11 @@ function GenerateTweetsButton(props) {
   // changeTweets function
   // api_response json object
 
-  const generateTweets = (event) => {
-    event.preventDefault();
-    console.log(event)
-    props.changeTweets({
-      tweets: ["Markovifying and generating tweets..."],
-    })
-    console.log(JSON.stringify(["test"]))
-    fetch("http://localhost:5000/generate_tweets", {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(props.model)
-      // body: JSON.stringify(["test"])
-    })
-    .then(response => {
-      console.log(response)
-      return response.json()
-    })
-    .then( (response) => {
-      console.log(response)
-      props.changeTweets(response)
-    })
-    .catch( (error) => {
-      props.changeTweets({
-        tweets: ["Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"],
-      })
-    })
-  }
+
 
   return(
     <button
-      onClick={generateTweets}> Generate Tweets
+      onClick={props.generateTweets}> Generate Tweets
       </button>
   )
 }
@@ -150,12 +137,10 @@ function GenerateTweetsButton(props) {
 function StartScreen(props) {
   return (
     <div className="start-screen">
-    <img className="logo" src={ require('./images/AAMarkov.jpg') } alt="logo" />
-      <h6>Andrey Markov</h6>
-      <br></br>
-      <p> Enter a twitter username to generate random semi-plausible new tweets for the given user. </p>
-      <p> The random tweets are generated from a Markov model based on the user's existing tweets. </p>
-      <p> Made using jsvine's Markovify library. </p>
+      <div className="start-instructions">
+        <p> Enter a twitter username to generate random semi-plausible new tweets for the given user. </p>
+        <p> Made using jsvine's Markovify library. </p>
+      </div>
       <br></br>
       <UserForm
         setUser={props.setUser}
@@ -193,6 +178,37 @@ function App() {
     tweets: response.tweets,
   })
 
+  const generateTweets = (event) => {
+    event.preventDefault();
+    console.log(event)
+    changeTweets({
+      tweets: ["Markovifying and generating tweets..."],
+    })
+    console.log(JSON.stringify(["test"]))
+    fetch("http://localhost:5000/generate_tweets", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(state.currentModel)
+      // body: JSON.stringify(["test"])
+    })
+    .then(response => {
+      console.log(response)
+      return response.json()
+    })
+    .then( (response) => {
+      console.log(response)
+      changeTweets(response)
+    })
+    .catch( (error) => {
+      changeTweets({
+        tweets: ["Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"],
+      })
+    })
+  }
+
   const showMessage = (message) => setState( {
     ...state,
     user: null,
@@ -212,7 +228,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Twitter Caricatures</h1>
+        <div className="titlebar">
+          <img className="logo" src={ require('./images/AAMarkov.jpg') } alt="logo" />
+          <h2 className="title">Markov Tweet Generator</h2>
+        </div>
         { !state.user &&
           <StartScreen
             setUser={setUser}
@@ -221,9 +240,9 @@ function App() {
           />
         }
         { state.user &&
-          <ModelDisplayArea state={state} changeTweets={changeTweets} />
+          <ModelDisplayArea state={state} changeTweets={changeTweets} generateTweets={generateTweets}/>
         }
-        <TweetDisplayArea state = {state} />
+        <TweetDisplayArea state={state} generateTweets={generateTweets}/>
       </header>
     </div>
   );
