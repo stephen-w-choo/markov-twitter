@@ -67,6 +67,7 @@ def markovify_user():
 def generate_tweets():
     if request.method == 'POST':
         res = []
+        print(request.get_json())
         text_model = markovify.Text.from_json(request.get_json())
         for i in range(5):
             res.append(text_model.make_sentence())

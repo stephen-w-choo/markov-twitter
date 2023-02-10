@@ -2,11 +2,13 @@ import './css/App.css';
 import './css/fonts.css';
 import './css/start.css';
 import './css/model.css';
-import { useState } from "react";
+import './css/tweet.css';
+import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import CountUp from 'react-countup';
+import FadeIn from 'react-fade-in';
 
 
 
@@ -36,12 +38,9 @@ function UserForm(props) {
       }
     )
     .then( (response) => {
-      console.log(response)
       return response.json()
     })
     .then( (response) => {
-
-      console.log(response)
       props.setUserModel({
         user: response.name,
         userHandle: response.username,
@@ -58,6 +57,13 @@ function UserForm(props) {
       )
     })
   }
+
+  // React.useEffect(() => {
+  //   console.log("useEffect")
+  //   if (props.userModel.currentModel) {
+  //     props.generateTweets()
+  //   }
+  // }, [props.userModel.currentModel])
 
   return (
     <div>
@@ -96,10 +102,12 @@ function TweetBox(props) {
 
 function TweetDisplayArea(props) {
   return (
-    <div className="tweet-display-area">
-      {props.tweets.map( (tweet, index) => {
-        return <TweetBox userModel={props.userModel} tweet={tweet} key={index}/>
-      })}
+    <div>
+      <FadeIn className="tweet-display-area">
+        {props.tweets.map( (tweet, index) => {
+          return <TweetBox userModel={props.userModel} tweet={tweet} key={index}/>
+        })}
+      </FadeIn>
     </div>
   )
 }
@@ -167,6 +175,7 @@ function StartScreen(props) {
       </div>
       <br></br>
       <UserForm
+        userModel = {props.userModel}
         setUserModel={props.setUserModel}
         resetTweets={props.resetTweets}
         showMessage={props.showMessage}
@@ -188,8 +197,20 @@ function App() {
     modelDate: null,
   })
 
+  const [tweetKey, setTweetKey] = useState(0)
+
+  React.useEffect(() => {
+    if (userModel.currentModel) {
+      generateTweets()
+    }
+  }, [userModel.currentModel])
+
+  React.useEffect(() => {
+    setTweetKey(tweetKey + 1)
+  }, [tweets])
+
   const generateTweets = (event) => {
-    console.log(event)
+    console.log(userModel)
     console.log(JSON.stringify(["test"]))
     fetch("http://localhost:5000/generate_tweets", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.,
@@ -201,12 +222,10 @@ function App() {
       // body: JSON.stringify(["test"])
     })
     .then(response => {
-      console.log(response)
       return response.json()
     })
     .then( (response) => {
-      console.log(response)
-      setTweets(response)
+      setTweets(response.tweets)
     })
     .catch( (error) => {
       setTweets(["Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"])
@@ -217,8 +236,6 @@ function App() {
 
   const resetTweets = () => setTweets([])
 
-  console.log(userModel)
-
   return (
     <div className="App">
       <header className="App-header">
@@ -228,6 +245,7 @@ function App() {
         </div>
         { !userModel.user &&
           <StartScreen
+            userModel = {userModel}
             setUserModel={setUserModel}
             resetTweets={resetTweets}
             showMessage={showMessage}
@@ -237,7 +255,7 @@ function App() {
         { userModel.user &&
           <ModelDisplayArea userModel={userModel} setTweets={setTweets} generateTweets={generateTweets}/>
         }
-        <TweetDisplayArea tweets={tweets} userModel={userModel} generateTweets={generateTweets}/>
+        <TweetDisplayArea key={tweetKey} tweets={tweets} userModel={userModel} generateTweets={generateTweets}/>
       </header>
     </div>
   );
