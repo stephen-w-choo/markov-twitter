@@ -1,5 +1,7 @@
-import './App.css';
-import './start.css';
+import './css/App.css';
+import './css/fonts.css';
+import './css/start.css';
+import './css/model.css';
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -38,8 +40,16 @@ function UserForm(props) {
       return response.json()
     })
     .then( (response) => {
+
       console.log(response)
-      props.setUser(response)
+      props.setUserModel({
+        user: response.name,
+        userHandle: response.username,
+        userProfilePicture: response.userProfilePicture,
+        currentModel: response.model,
+        modelSize: response.modelSize,
+        modelDate: response.modelDate,
+      })
     })
     .catch( (error) => {
       console.log(error)
@@ -71,10 +81,10 @@ function TweetBox(props) {
   return (
     <div className="twitter-tweet">
       <div className="tweet-header">
-        <img src={props.state.userProfilePicture} alt = "" ></img>
+        <img src={props.userModel.userProfilePicture} alt = "" ></img>
         <div className="tweeter-name-box">
-          <div>{props.state.user}</div>
-          <div className="tweeter-username">{props.state.userHandle && `@${props.state.userHandle}`}</div>
+          <div>{props.userModel.user}</div>
+          <div className="tweeter-username">{props.userModel.userHandle && `@${props.userModel.userHandle}`}</div>
         </div>
       </div>
       <p>
@@ -87,8 +97,8 @@ function TweetBox(props) {
 function TweetDisplayArea(props) {
   return (
     <div className="tweet-display-area">
-      {props.state.tweets.map( (tweet, index) => {
-        return <TweetBox state={props.state} tweet={tweet} key={index}/>
+      {props.tweets.map( (tweet, index) => {
+        return <TweetBox userModel={props.userModel} tweet={tweet} key={index}/>
       })}
     </div>
   )
@@ -96,24 +106,38 @@ function TweetDisplayArea(props) {
 
 function ModelDisplayArea(props) {
   return (
-
     <div className="model-display-area" style={{"width": "100%"}}>
       <h3>
-        Markov model loaded for:
+        Language model generated for:
       </h3>
-      <div className="twitter-tweet">
-        <div className="tweet-header">
-          <img src={props.state.userProfilePicture} alt = "" ></img>
-          <div className="tweeter-name-box">
-            <div>{props.state.user}</div>
-            <div className="tweeter-username">{props.state.userHandle && `@${props.state.userHandle}`}</div>
-          </div>
+      <div className="model-box">
+        <div className="model-profile">
+          <img className="user-profile-picture" src={props.userModel.userProfilePicture} alt = "" ></img>
+          <div>{props.userModel.user}</div>
+          <div className="tweeter-username">{props.userModel.userHandle && `@${props.userModel.userHandle}`}</div>
         </div>
-        <p>
-          Markov model generated from <CountUp end={props.state.modelSize} duration={1}/> tweets from {props.state.modelDate}
-        </p>
+
+        <div className="model-information">
+          <p>Generated using</p>
+          <ul>
+            <li>
+              <CountUp end={props.userModel.modelSize} duration={1}/>
+              <span>Tweets</span>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              From {props.userModel.modelDate}
+            </li>
+          </ul>
+        </div>
+
+
       </div>
-      <GenerateTweetsButton model={props.state.currentModel} changeTweets={props.changeTweets} generateTweets={props.generateTweets} />
+      <GenerateTweetsButton
+      model={props.userModel.currentModel}
+      setTweets={props.setTweets}
+      generateTweets={props.generateTweets} />
     </div>
   )
 }
@@ -143,47 +167,29 @@ function StartScreen(props) {
       </div>
       <br></br>
       <UserForm
-        setUser={props.setUser}
+        setUserModel={props.setUserModel}
         resetTweets={props.resetTweets}
         showMessage={props.showMessage}
+        generateTweets={props.generateTweets}
       />
     </div>
   )
 }
 
 function App() {
-  const [state, setState] = useState({
+  const [tweets, setTweets] = useState([])
+
+  const [userModel, setUserModel] = useState({
     user: null,
     userHandle: null,
     userProfilePicture: null,
     currentModel: null, // unsure - storing the markov model in the state is probably a bit much - would be better in the session storage
     modelSize: null,
     modelDate: null,
-    tweets: [],
-  })
-
-  const setUser = (response) => setState( {
-    ...state,
-    user: response.name,
-    userHandle: response.username,
-    userProfilePicture: response.userProfilePicture,
-    currentModel: response.model,
-    modelSize: response.modelSize,
-    modelDate: response.modelDate,
-    tweets: []
-  })
-
-  const changeTweets = (response) => setState( {
-    ...state,
-    tweets: response.tweets,
   })
 
   const generateTweets = (event) => {
-    event.preventDefault();
     console.log(event)
-    changeTweets({
-      tweets: ["Markovifying and generating tweets..."],
-    })
     console.log(JSON.stringify(["test"]))
     fetch("http://localhost:5000/generate_tweets", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.,
@@ -191,7 +197,7 @@ function App() {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(state.currentModel)
+      body: JSON.stringify(userModel.currentModel)
       // body: JSON.stringify(["test"])
     })
     .then(response => {
@@ -200,30 +206,18 @@ function App() {
     })
     .then( (response) => {
       console.log(response)
-      changeTweets(response)
+      setTweets(response)
     })
     .catch( (error) => {
-      changeTweets({
-        tweets: ["Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"],
-      })
+      setTweets(["Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"])
     })
   }
 
-  const showMessage = (message) => setState( {
-    ...state,
-    user: null,
-    userHandle: null,
-    userProfilePicture: null,
-    currentModel: null,
-    tweets: [message],
-  })
+  const showMessage = (message) => setTweets([message])
 
-  const resetTweets = () => setState( {
-    ...state,
-    tweets: [],
-  })
+  const resetTweets = () => setTweets([])
 
-
+  console.log(userModel)
 
   return (
     <div className="App">
@@ -232,17 +226,18 @@ function App() {
           <img className="logo" src={ require('./images/AAMarkov.jpg') } alt="logo" />
           <h2 className="title">Markov Tweet Generator</h2>
         </div>
-        { !state.user &&
+        { !userModel.user &&
           <StartScreen
-            setUser={setUser}
+            setUserModel={setUserModel}
             resetTweets={resetTweets}
             showMessage={showMessage}
+            generateTweets={generateTweets}
           />
         }
-        { state.user &&
-          <ModelDisplayArea state={state} changeTweets={changeTweets} generateTweets={generateTweets}/>
+        { userModel.user &&
+          <ModelDisplayArea userModel={userModel} setTweets={setTweets} generateTweets={generateTweets}/>
         }
-        <TweetDisplayArea state={state} generateTweets={generateTweets}/>
+        <TweetDisplayArea tweets={tweets} userModel={userModel} generateTweets={generateTweets}/>
       </header>
     </div>
   );

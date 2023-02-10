@@ -6,8 +6,6 @@
 .start-instructions{
   width: calc(100% - 60px);
   padding: 30px;
-  background-color: #282c34;
-  color: #FAFAFF
 }
 
 .start-instructions p{

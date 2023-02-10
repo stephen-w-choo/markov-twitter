@@ -41,6 +41,9 @@ def markovify_user():
     user_data = user_api_response["data"]
     user_id = user_data["id"]
 
+    # replace 'normal' with '400x400' to get the larger profile picture
+    user_data["profile_image_url"] = user_data["profile_image_url"].replace("normal", "400x400")
+
     # get the corpus, to be returned as a json object
     corpus, model_size, model_date= twitter_api_helpers.twitter_user_to_corpus(user_id, headers, payload, 1)
     corpus = language_helpers.filter(corpus)

@@ -1,0 +1,38 @@
+.model-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.model-profile {
+  background-color: #bdc3c7;
+  overflow: hidden;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; }
+  .model-profile img {
+    height: 300px;
+    border-radius: 50%;
+    margin: 0 auto;
+    border-width: 4px;
+    border-color: white}
+
+.model-information {
+  margin-top: .6em;
+  color: #81878b; }
+  .model-information li {
+    width: 32%;
+    text-align: center;
+    display: inline-block;
+    font-size: 1.5em;
+    font-family: 'Lato';
+    border-right: solid 1px #bdc3c7; }
+    .model-information li:last-child {
+      border: none; }
+    .model-information li span {
+      display: block;
+      text-transform: uppercase;
+      font-family: 'Quicksand';
+      font-size: .5em;
+      margin-top: .6em;
+      font-weight:700;
+    }
