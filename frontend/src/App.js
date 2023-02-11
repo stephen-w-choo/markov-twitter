@@ -4,6 +4,7 @@ import './css/start.css';
 import './css/model.css';
 import './css/tweet.css';
 import React, { useState } from "react";
+import StatusBox from "./components/StatusBox";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -28,7 +29,11 @@ function UserForm(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(query)
-    props.showMessage("Collecting tweets and generating model")
+    props.setStatus({
+      loading: true,
+      message: ("Collecting tweets and generating model")
+    })
+
 
     fetch(
       `http://localhost:5000/markovify_user?username=${query.username}`,
@@ -49,12 +54,17 @@ function UserForm(props) {
         modelSize: response.modelSize,
         modelDate: response.modelDate,
       })
+      props.setStatus({
+        loading: false,
+        message: null
+      })
     })
     .catch( (error) => {
       console.log(error)
-      props.showMessage(
-        "Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"
-      )
+      props.setStatus({
+        loading: false,
+        message: ("Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama")
+      })
     })
   }
 
@@ -157,8 +167,6 @@ function GenerateTweetsButton(props) {
   // changeTweets function
   // api_response json object
 
-
-
   return(
     <button
       onClick={props.generateTweets}> Generate Tweets
@@ -178,7 +186,7 @@ function StartScreen(props) {
         userModel = {props.userModel}
         setUserModel={props.setUserModel}
         resetTweets={props.resetTweets}
-        showMessage={props.showMessage}
+        setStatus={props.setStatus}
         generateTweets={props.generateTweets}
       />
     </div>
@@ -186,6 +194,11 @@ function StartScreen(props) {
 }
 
 function App() {
+  const [status, setStatus] = useState({
+    message: null,
+    loading: false,
+  })
+
   const [tweets, setTweets] = useState([])
 
   const [userModel, setUserModel] = useState({
@@ -199,19 +212,22 @@ function App() {
 
   const [tweetKey, setTweetKey] = useState(0)
 
-  React.useEffect(() => {
-    if (userModel.currentModel) {
-      generateTweets()
+  React.useEffect(() => { // generates tweets when the model is loaded
+    if (userModel.currentModel) { // this is because the new functional setstate doesn't update the state immediately
+      generateTweets() // and doesn't allow for callbacks immediately after the state is set
     }
   }, [userModel.currentModel])
 
-  React.useEffect(() => {
-    setTweetKey(tweetKey + 1)
+  React.useEffect(() => { // sets a key to the tweets to force remounting of the tweet display area
+    setTweetKey(tweetKey + 1) // this is a bit of a hacky way to force the tweet display area to remount and trigger the fadein animation
   }, [tweets])
 
   const generateTweets = (event) => {
     console.log(userModel)
-    console.log(JSON.stringify(["test"]))
+    setStatus({
+      loading: true,
+      message: "Generating tweets..."
+    })
     fetch("http://localhost:5000/generate_tweets", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.,
       headers: {
@@ -226,13 +242,19 @@ function App() {
     })
     .then( (response) => {
       setTweets(response.tweets)
+      setStatus({
+        loading: false,
+        message: null
+      })
     })
     .catch( (error) => {
-      setTweets(["Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama"])
+      setTweets([])
+      setStatus({
+        message: "Error generating tweets",
+        loading: false,
+      })
     })
   }
-
-  const showMessage = (message) => setTweets([message])
 
   const resetTweets = () => setTweets([])
 
@@ -243,15 +265,19 @@ function App() {
           <img className="logo" src={ require('./images/AAMarkov.jpg') } alt="logo" />
           <h2 className="title">Markov Tweet Generator</h2>
         </div>
-        { !userModel.user &&
+        { !userModel.user && // show the start screen if there is no user
           <StartScreen
             userModel = {userModel}
             setUserModel={setUserModel}
             resetTweets={resetTweets}
-            showMessage={showMessage}
             generateTweets={generateTweets}
+            setStatus={setStatus}
           />
         }
+        {
+          status && <StatusBox status={status}/>
+        }
+
         { userModel.user &&
           <ModelDisplayArea userModel={userModel} setTweets={setTweets} generateTweets={generateTweets}/>
         }
