@@ -47,7 +47,7 @@ def markovify_user():
 
 
     # get the corpus, to be returned as a json object
-    corpus, model_size, model_start_date, model_end_date= twitter_api_helpers.twitter_user_to_corpus(user_id, headers, payload, tweet_n)
+    corpus, model_word_count, model_tweet_count, model_start_date, model_end_date= twitter_api_helpers.twitter_user_to_corpus(user_id, headers, payload, tweet_n)
     corpus = language_helpers.filter(corpus)
     text_model = markovify.Text(corpus, retain_original=False)
     model_json = text_model.to_json()
@@ -56,7 +56,7 @@ def markovify_user():
     return jsonify(
         {
             "model": model_json,
-            "modelSize": model_size,
+            "modelSize": {"words": model_word_count, "tweets": model_tweet_count},
             "modelDate": [model_start_date, model_end_date],
             "userMetrics": user_data["public_metrics"],
             "name": user_data["name"],

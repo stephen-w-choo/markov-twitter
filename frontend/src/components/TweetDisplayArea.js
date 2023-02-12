@@ -1,13 +1,16 @@
 import FadeIn from 'react-fade-in';
+import { Flex } from "@chakra-ui/react";
 
 function TweetDisplayArea(props) {
   return (
     <div>
-      <FadeIn className="tweet-display-area">
-        {props.tweets.map( (tweet, index) => {
-          return <TweetBox userModel={props.userModel} tweet={tweet} key={index}/>
-        })}
-      </FadeIn>
+      <Flex justifyContent={"center"}>
+        <FadeIn className="tweet-display-area">
+          {props.tweets.map( (tweet, index) => {
+            return <TweetBox userModel={props.userModel} tweet={tweet} key={index}/>
+          })}
+        </FadeIn>
+      </Flex>
     </div>
   )
 }

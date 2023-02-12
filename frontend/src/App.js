@@ -20,6 +20,8 @@ function App() {
   const [status, setStatus] = useState({
     message: null,
     loading: false,
+    show: false,
+    error: false,
   })
 
   const [tweets, setTweets] = useState([])
@@ -52,6 +54,8 @@ function App() {
     setStatus({
       message: null,
       loading: false,
+      show: false,
+      error: false,
     })
   }
 
@@ -72,7 +76,9 @@ function App() {
     console.log(userModel)
     setStatus({
       loading: true,
-      message: "Generating tweets..."
+      message: "Generating tweets...",
+      show: true,
+      error: false
     })
     fetch("http://localhost:5000/generate_tweets", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.,
@@ -88,8 +94,10 @@ function App() {
     })
     .then( (response) => {
       setStatus({
+        message: null,
         loading: false,
-        message: null
+        show: false,
+        error: false,
       })
       setTweets(response.tweets)
     })
@@ -98,6 +106,8 @@ function App() {
       setStatus({
         message: "Error generating tweets",
         loading: false,
+        show: false,
+        error: true
       })
     })
   }
@@ -131,7 +141,7 @@ function App() {
             }
             <TweetDisplayArea key={tweetKey} tweets={tweets} userModel={userModel} generateTweets={generateTweets}/>
             {
-              status && <StatusBox status={status}/>
+              status && <StatusBox status={status.show}/>
             }
           </Container>
         </header>

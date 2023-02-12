@@ -6,6 +6,8 @@ import {
   Box,
   Button,
   Flex,
+  FormControl,
+  FormErrorMessage,
   Heading,
   HStack,
   Input,
@@ -45,7 +47,9 @@ function UserForm(props) {
     event.preventDefault();
     props.setStatus({
       loading: true,
-      message: ("Collecting tweets and generating model")
+      message: ("Collecting tweets and generating model"),
+      show: true,
+      error: false,
     })
     fetch(
       `http://localhost:5000/markovify_user?username=${query.username}&tweetN=${tweetN}`,
@@ -59,8 +63,10 @@ function UserForm(props) {
     })
     .then( (response) => {
       props.setStatus({
+        message: null,
         loading: false,
-        message: null
+        show: false,
+        error: false,
       })
       props.setUserModel({
         user: response.name,
@@ -77,7 +83,9 @@ function UserForm(props) {
       console.log(error)
       props.setStatus({
         loading: false,
-        message: ("Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama")
+        message: (`Error - user was not found. Remember to type in your user handle without the @ \neg type BarackObama instead of @BarackObama`),
+        show: false,
+        error: true,
       })
     })
   }
@@ -85,23 +93,33 @@ function UserForm(props) {
   return (
     <div>
       <Flex flexDir={"column"}>
-        <InputGroup margin={'30px auto'} maxW={'50ch'}>
-          <InputLeftElement
-            pointerEvents="none"
-            children={<AtSignIcon color="gray.800"
-            p={0}/>}
-          />
-          <Input
-            type = "text"
-            id = "search-input"
-            variant="filled"
-            name = "username"
-            placeholder = "Twitter handle eg BarackObama, AlboMP"
-            value = {query.username}
-            onChange = {handleChange}
-            pl={8}
-          />
-        </InputGroup>
+        <FormControl isInvalid={props.status.error} >
+          <InputGroup margin={'30px auto'} maxW={'50ch'}>
+            <InputLeftElement
+              pointerEvents="none"
+              children={
+                <AtSignIcon
+                  color="gray.800"
+                  p={0}
+                  h={20}
+                />
+              }
+            />
+            <Input
+              type = "text"
+              id = "search-input"
+              variant="filled"
+              name = "username"
+              placeholder = "Twitter handle eg BarackObama, AlboMP"
+              value = {query.username}
+              onChange = {handleChange}
+              pl={8}
+              fontSize={'1.2rem'}
+            />
+
+          </InputGroup>
+          <FormErrorMessage mt={0} mb={3}>{props.status.message}</FormErrorMessage>
+        </FormControl>
         <Flex
           w={"100%"}
           justifyContent="space-around"

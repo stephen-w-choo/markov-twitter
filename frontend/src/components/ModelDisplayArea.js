@@ -55,22 +55,22 @@ function ModelDisplayArea(props) {
         variant='outline'
         p='3'
       >
-        <CardHeader>
-          <Heading size='md'>Model Details</Heading>
-        </CardHeader>
-        <Flex justifyContent={"center"}>
+        <Flex justifyContent={"center"} alignItems={"center"}>
           <Image
             objectFit='cover'
-            h='100px'
-            w='100px'
+            borderRadius={'md'}
+            h='120px'
+            w='120px'
             src={props.userModel.userProfilePicture}
           />
-          <Box w={"100%"} maxW="50ch" pl="3">
-            <Heading size='md' m="1">{props.userModel.user}</Heading>
-            <Heading size='sm' m="1">{`@${props.userModel.userHandle}`}</Heading>
-            <Text fontSize='sm' m="1">Joined {props.userModel.userJoined}</Text>
-            <StatGroup justifyContent={"space-between"} maxW={"40ch"} textAlign={"center"} m={"0 auto"}>
-              <Stat colorScheme={"twitter"}>
+          <Box w={"100%"} maxW="40ch" pl="3">
+            <Heading size='sm' m="5px 15px">{props.userModel.user}</Heading>
+            <Heading size='sm' m="5px 15px"color='blackAlpha.600'>
+              {`@${props.userModel.userHandle}`}
+            </Heading>
+            <Text fontSize='sm' m="5px 15px">Joined {props.userModel.userJoined}</Text>
+            <StatGroup justifyContent={"space-between"} maxW={"30ch"} textAlign={"center"}>
+              <Stat colorScheme={"twitter"} maxW={"10ch"}>
                 <StatNumber fontSize="sm">
                   {twitterNumber(props.userModel.userMetrics.tweet_count)}
                 </StatNumber>
@@ -78,7 +78,7 @@ function ModelDisplayArea(props) {
                   tweets
                 </StatHelpText>
               </Stat>
-              <Stat colorScheme={"twitter"}>
+              <Stat colorScheme={"twitter"} maxW={"10ch"}>
                 <StatNumber fontSize="sm">
                   {twitterNumber(props.userModel.userMetrics.following_count)}
                 </StatNumber>
@@ -86,7 +86,7 @@ function ModelDisplayArea(props) {
                   following
                 </StatHelpText>
               </Stat>
-              <Stat colorScheme={"twitter"}>
+              <Stat colorScheme={"twitter"} maxW={"10ch"}>
                 <StatNumber fontSize="sm">
                   {twitterNumber(props.userModel.userMetrics.followers_count)}
                 </StatNumber>
@@ -97,12 +97,22 @@ function ModelDisplayArea(props) {
             </StatGroup>
           </Box>
         </Flex>
+        <CardHeader>
+          <Heading size='md' textAlign={"center"}>Model Details</Heading>
+        </CardHeader>
         <StatGroup textAlign={"center"}>
           <Stat>
             <StatLabel>Trained on</StatLabel>
-            <StatNumber><CountUp end={props.userModel.modelSize} duration={1}/></StatNumber>
+            <StatNumber><CountUp end={props.userModel.modelSize.tweets} duration={1.5}/></StatNumber>
             <StatHelpText>
               tweets
+            </StatHelpText>
+          </Stat>
+          <Stat>
+            <StatLabel>with</StatLabel>
+            <StatNumber><CountUp end={props.userModel.modelSize.words} duration={2}/></StatNumber>
+            <StatHelpText>
+              words
             </StatHelpText>
           </Stat>
           <Stat>
