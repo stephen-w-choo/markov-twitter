@@ -30,6 +30,7 @@ def index():
 def markovify_user():
     # look up the user from the twitter API
     username = request.args.get('username')
+    tweet_n = int(request.args.get('tweetN')) // 100
     user_api_response = twitter_api_helpers.lookup_username(headers, username)
 
     # returns error if the user is not found
@@ -45,7 +46,7 @@ def markovify_user():
     user_data["profile_image_url"] = user_data["profile_image_url"].replace("normal", "400x400")
 
     # get the corpus, to be returned as a json object
-    corpus, model_size, model_date= twitter_api_helpers.twitter_user_to_corpus(user_id, headers, payload, 1)
+    corpus, model_size, model_date= twitter_api_helpers.twitter_user_to_corpus(user_id, headers, payload, tweet_n)
     corpus = language_helpers.filter(corpus)
     text_model = markovify.Text(corpus, retain_original=False)
     model_json = text_model.to_json()
@@ -55,8 +56,10 @@ def markovify_user():
             "model": model_json,
             "modelSize": model_size,
             "modelDate": model_date,
+            "userMetrics": user_data["public_metrics"],
             "name": user_data["name"],
             "username": username,
+            "userJoined": language_helpers.string_to_date(user_data["created_at"]).strftime("%b %Y"),
             "userProfilePicture": user_data["profile_image_url"],
             }
         )

@@ -20,10 +20,14 @@ function App() {
 
   const [tweets, setTweets] = useState([])
 
+  // const [currentScreen, setCurrentScreen] = useState("start")
+
   const [userModel, setUserModel] = useState({
     user: null,
     userHandle: null,
     userProfilePicture: null,
+    userMetrics: null,
+    userJoined: null,
     currentModel: null, // unsure - storing the markov model in the state is probably a bit much - would be better in the session storage
     modelSize: null,
     modelDate: null,
@@ -34,6 +38,8 @@ function App() {
       user: null,
       userHandle: null,
       userProfilePicture: null,
+      userMetrics: null,
+      userJoined: null,
       currentModel: null, // unsure - storing the markov model in the state is probably a bit much - would be better in the session storage
       modelSize: null,
       modelDate: null,
@@ -102,7 +108,7 @@ function App() {
             <img className="logo" src={ require('./images/AAMarkov.jpg') } alt="logo" />
             <h2 className="title">Markov Tweet Generator</h2>
           </div>
-          <Container maxW='container.sm'>
+          <Container maxW='container.md' paddingTop={2}>
             { !userModel.user && // show the start screen if there is no user
               <StartScreen
                 userModel = {userModel}
