@@ -2,7 +2,19 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
-import { Button, Flex, Heading, Input } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  HStack,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputLeftAddon,
+  Spacer,
+  useMediaQuery } from "@chakra-ui/react";
+import { AtSignIcon } from '@chakra-ui/icons'
 import TweetSlider from "./TweetSlider"
 
 library.add(fab)
@@ -15,6 +27,13 @@ function UserForm(props) {
   })
 
   const [tweetN, setTweetN] = useState(defaultTweetN)
+
+  const [isLargerThan600] = useMediaQuery('(min-width: 600px)') // mediaquery hook
+
+  var layout = "column-reverse"
+  if (isLargerThan600) {
+    layout = "row"
+  }
 
   const handleChange = (event) => {
     setQuery({
@@ -65,32 +84,44 @@ function UserForm(props) {
 
   return (
     <div>
-      <form onSubmit = {handleSubmit}>
-        <Heading textAlign={'center'}>Enter a twitter username</Heading>
-        <Flex
-          justifyContent={'space-between'}
-          flexWrap={'wrap'}
-          >
+      <Flex flexDir={"column"}>
+        <InputGroup margin={'30px auto'} maxW={'50ch'}>
+          <InputLeftElement
+            pointerEvents="none"
+            children={<AtSignIcon color="gray.800"
+            p={0}/>}
+          />
           <Input
             type = "text"
             id = "search-input"
+            variant="filled"
             name = "username"
-            placeholder = "username eg BarackObama, AlboMP"
+            placeholder = "Twitter handle eg BarackObama, AlboMP"
             value = {query.username}
             onChange = {handleChange}
-            margin={'10px auto'}
+            pl={8}
           />
+        </InputGroup>
+        <Flex
+          w={"100%"}
+          justifyContent="space-around"
+          alignItems="center"
+          flexDir={layout}
+        >
+          <Box w={"100%"} maxW={"300px"} m={3}>
+            <TweetSlider tweetN={tweetN} setTweetN={setTweetN} defaultTweetN={defaultTweetN} primaryColor={props.primaryColor} />
+          </Box>
           <Button
             onClick={handleSubmit}
             isLoading={props.status.loading}
-            colorScheme={'blue'}
-            margin={'10px auto'}
+            colorScheme={'teal'}
+            isDisabled={tweetN === 0}
+            m={3}
           >
-            <FontAwesomeIcon icon={['fab', 'twitter']} /> Generate tweets
+            <FontAwesomeIcon icon={['fab', 'twitter']} /><Spacer mr="2" />{`  Generate tweets`}
           </Button>
         </Flex>
-      </form>
-      <TweetSlider tweetN={tweetN} setTweetN={setTweetN} defaultTweetN={defaultTweetN}/>
+      </Flex>
     </div>
   )
 }

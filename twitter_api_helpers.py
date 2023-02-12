@@ -46,7 +46,7 @@ def paginate(api_response: dict, headers: dict, url_request: dict, pages: int) -
     return current_list
 
 
-def twitter_json_to_string(list_of_tweet_objects: list) -> tuple[str, int, str]:
+def twitter_json_to_string(list_of_tweet_objects: list) -> tuple[str, int, str, str]:
     # Takes the data object from the API response and converts to a string
     # returns the string, the number of tweets, and the date range
     text = []
@@ -59,16 +59,16 @@ def twitter_json_to_string(list_of_tweet_objects: list) -> tuple[str, int, str]:
     startdate = string_to_date(list_of_tweet_objects[-1]["created_at"])
     enddate = string_to_date(list_of_tweet_objects[0]["created_at"])
 
-    return ("\n".join(text), n_tweets, f"{startdate.strftime('%B-%Y')} to {enddate.strftime('%B-%Y')}")
+    return ("\n".join(text), n_tweets, f"{startdate.strftime('%b-%Y')}", f"{enddate.strftime('%b-%Y')}")
 
-def twitter_user_to_corpus(user_id, headers, payload, tweet_pages=4) -> tuple[str, int, str]:
+def twitter_user_to_corpus(user_id, headers, payload, tweet_pages=4) -> tuple[str, int, str, str]:
     # Takes a user id and returns a corpus of tweets as a string, will paginate 4 times by default
     url = timeline_url(user_id)
     api_response = request(payload, headers, url)
     full_list = paginate(api_response, headers, url, tweet_pages)
-    corpus, n_tweets, date_range = twitter_json_to_string(full_list)
+    corpus, n_tweets, startdate, enddate = twitter_json_to_string(full_list)
 
-    return (corpus, n_tweets, date_range)
+    return (corpus, n_tweets, startdate, enddate)
 
 def aggregate_sentiment(tweets):
     # Takes a list of tweets and returns the aggregate compounded sentiment

@@ -6,6 +6,7 @@ import './css/tweet.css';
 import React, { useState } from "react";
 import { ChakraProvider, Container } from '@chakra-ui/react'
 
+import TitleBar from './components/TitleBar';
 import ModelDisplayArea from './components/ModelDisplayArea';
 import StartScreen from './components/StartScreen';
 import StatusBox from "./components/StatusBox";
@@ -13,6 +14,9 @@ import TweetDisplayArea from './components/TweetDisplayArea';
 
 
 function App() {
+
+  const primaryColor = "#61777f"
+
   const [status, setStatus] = useState({
     message: null,
     loading: false,
@@ -104,10 +108,7 @@ function App() {
     <ChakraProvider>
       <div className="App">
         <header className="App-header">
-          <div className="titlebar">
-            <img className="logo" src={ require('./images/AAMarkov.jpg') } alt="logo" />
-            <h2 className="title">Markov Tweet Generator</h2>
-          </div>
+          <TitleBar logoSrc={require('./images/logo.png')} title="Markov Tweet Generator"/>
           <Container maxW='container.md' paddingTop={2}>
             { !userModel.user && // show the start screen if there is no user
               <StartScreen
@@ -117,6 +118,7 @@ function App() {
                 generateTweets={generateTweets}
                 status={status}
                 setStatus={setStatus}
+                primaryColor={primaryColor}
               />
             }
 

@@ -34,49 +34,61 @@ function BackButton(props) {
 function ModelDisplayArea(props) {
   // takes a response from the markovify_user api and displays the user details and background of the tweets
   // has a button to generate tweets from the model
-  // props needs to include:
-  // changeTweets function
-  // api_response json object
+
+
+  const twitterNumber = (number) => {
+    // takes a number and returns a string in the format "X.XXm" or "X.XXk"
+    // depending on the size of the number
+    if (number >= 1000000) {
+      return `${(number/1000000).toFixed(2)}m`
+    } else if (number >= 1000) {
+      return `${(number/1000).toFixed(2)}k`
+    } else {
+      return number
+    }
+  }
+
   return (
     <div className="model-display-area">
       <Card
         overflow='hidden'
         variant='outline'
+        p='3'
       >
         <CardHeader>
           <Heading size='md'>Model Details</Heading>
         </CardHeader>
-        <Flex >
+        <Flex justifyContent={"center"}>
           <Image
             objectFit='cover'
-            h='150px'
-            w='150px'
+            h='100px'
+            w='100px'
             src={props.userModel.userProfilePicture}
           />
-          <Box>
-            <Heading size='md'>{props.userModel.user}</Heading>
-            <Heading size='sm'>{`@${props.userModel.userHandle}`}</Heading>
-            <Text fontSize='sm'>Joined {props.userModel.userJoined}</Text>
-            <StatGroup>
-              <Stat>
-                <StatNumber>
-                  {props.userModel.userMetrics.tweet_count}
+          <Box w={"100%"} maxW="50ch" pl="3">
+            <Heading size='md' m="1">{props.userModel.user}</Heading>
+            <Heading size='sm' m="1">{`@${props.userModel.userHandle}`}</Heading>
+            <Text fontSize='sm' m="1">Joined {props.userModel.userJoined}</Text>
+            <StatGroup justifyContent={"space-between"} maxW={"40ch"} textAlign={"center"} m={"0 auto"}>
+              <Stat colorScheme={"twitter"}>
+                <StatNumber fontSize="sm">
+                  {twitterNumber(props.userModel.userMetrics.tweet_count)}
                 </StatNumber>
                 <StatHelpText>
                   tweets
                 </StatHelpText>
               </Stat>
-              <Stat>
-                <StatNumber>
-                  {props.userModel.userMetrics.following_count}
+              <Stat colorScheme={"twitter"}>
+                <StatNumber fontSize="sm">
+                  {twitterNumber(props.userModel.userMetrics.following_count)}
                 </StatNumber>
                 <StatHelpText>
                   following
                 </StatHelpText>
               </Stat>
-              <Stat>
-                <StatNumber>
-                  {props.userModel.userMetrics.followers_count}
+              <Stat colorScheme={"twitter"}>
+                <StatNumber fontSize="sm">
+                  {twitterNumber(props.userModel.userMetrics.followers_count)}
                 </StatNumber>
                 <StatHelpText>
                   followers
@@ -85,7 +97,7 @@ function ModelDisplayArea(props) {
             </StatGroup>
           </Box>
         </Flex>
-        <StatGroup>
+        <StatGroup textAlign={"center"}>
           <Stat>
             <StatLabel>Trained on</StatLabel>
             <StatNumber><CountUp end={props.userModel.modelSize} duration={1}/></StatNumber>
@@ -94,8 +106,18 @@ function ModelDisplayArea(props) {
             </StatHelpText>
           </Stat>
           <Stat>
-            <StatLabel>Tweet Date Range</StatLabel>
-            <StatNumber>{props.userModel.modelDate}</StatNumber>
+            <StatLabel>
+              Tweet Date Range
+            </StatLabel>
+            <StatNumber fontSize="sm">
+              {props.userModel.modelDate[0]}
+            </StatNumber>
+            <StatHelpText mb={"0"}>
+              to
+            </StatHelpText>
+            <StatNumber fontSize="sm">
+              {props.userModel.modelDate[1]}
+            </StatNumber>
           </Stat>
         </StatGroup>
       </Card>

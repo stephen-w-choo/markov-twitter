@@ -21,11 +21,15 @@ function TweetSlider(props) {
       <Slider
         aria-label='slider-ex-6'
         defaultValue={props.defaultTweetN}
-        min={100}
+        min={0}
         max={1600}
-        onChange={(val) => props.setTweetN(val)}
+        onChange={(val) => {
+          props.setTweetN(val)
+        }}
         step={100}
+        colorScheme="teal"
       >
+
         <SliderMark value={400} {...labelStyles}>
           400
         </SliderMark>
@@ -38,11 +42,13 @@ function TweetSlider(props) {
         <SliderMark
           value={props.tweetN}
           textAlign='center'
-          bg='blue.500'
+          bg="teal"
           color='white'
-          mt='-10'
+          mt='-12'
           ml='-8'
           whiteSpace={'nowrap'}
+          borderRadius='md'
+          p={1}
         >
           {props.tweetN} tweets
         </SliderMark>

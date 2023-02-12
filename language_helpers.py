@@ -21,3 +21,12 @@ def string_to_date(date_string: str) -> datetime:
 def datetime_to_month_year(date: datetime) -> str:
     # takes a datetime object and returns a string in the format "Month-Year"
     return date.strftime("%B-%Y")
+
+def twitter_follower_number(number: int) -> str:
+    # takes a number and returns a string in the format "X.XXm" or "X.XXk"
+    if number > 1000000:
+        return f"{number/1000000:.2f}M"
+    elif number > 1000:
+        return f"{number/1000:.2f}K"
+    else:
+        return str(number)
