@@ -17,6 +17,7 @@ import {
   Spacer,
   useMediaQuery } from "@chakra-ui/react";
 import { AtSignIcon } from '@chakra-ui/icons'
+import StatusBox from "./StatusBox";
 import TweetSlider from "./TweetSlider"
 
 library.add(fab)
@@ -52,7 +53,7 @@ function UserForm(props) {
       error: false,
     })
     fetch(
-      `http://localhost:5000/markovify_user?username=${query.username}&tweetN=${tweetN}`,
+      `/markovify_user?username=${query.username}&tweetN=${tweetN}`,
       {
         method: 'GET', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
@@ -118,27 +119,32 @@ function UserForm(props) {
             />
 
           </InputGroup>
-          <FormErrorMessage mt={0} mb={3}>{props.status.message}</FormErrorMessage>
+          <FormErrorMessage mt={-4} mb={4}>{props.status.message}</FormErrorMessage>
         </FormControl>
-        <Flex
-          w={"100%"}
-          justifyContent="space-around"
-          alignItems="center"
-          flexDir={layout}
-        >
-          <Box w={"100%"} maxW={"300px"} m={3}>
-            <TweetSlider tweetN={tweetN} setTweetN={setTweetN} defaultTweetN={defaultTweetN} primaryColor={props.primaryColor} />
-          </Box>
-          <Button
-            onClick={handleSubmit}
-            isLoading={props.status.loading}
-            colorScheme={'teal'}
-            isDisabled={tweetN === 0}
-            m={3}
+        {
+          props.status.show && <StatusBox status={props.status}/>
+        }
+        { !props.status.show &&
+          <Flex
+            w={"100%"}
+            justifyContent="space-around"
+            alignItems="center"
+            flexDir={layout}
           >
-            <FontAwesomeIcon icon={['fab', 'twitter']} /><Spacer mr="2" />{`  Generate tweets`}
-          </Button>
-        </Flex>
+            <Box w={"100%"} maxW={"300px"} m={3}>
+              <TweetSlider tweetN={tweetN} setTweetN={setTweetN} defaultTweetN={defaultTweetN} primaryColor={props.primaryColor} />
+            </Box>
+            <Button
+              onClick={handleSubmit}
+              isLoading={props.status.loading}
+              colorScheme={'teal'}
+              isDisabled={tweetN === 0}
+              m={3}
+            >
+              <FontAwesomeIcon icon={['fab', 'twitter']} /><Spacer mr="1" />{`Generate model`}
+            </Button>
+          </Flex>
+        }
       </Flex>
     </div>
   )

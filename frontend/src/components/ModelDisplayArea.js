@@ -2,39 +2,32 @@ import React from "react";
 import CountUp from 'react-countup';
 import {
   Box,
+  Button,
   Card,
   CardHeader,
+  Divider,
   Flex,
   Heading,
   Image,
+  Spacer,
   StatGroup,
   Stat,
   StatLabel,
   StatNumber,
   StatHelpText,
-  Text
+  Text,
  } from "@chakra-ui/react";
+import { ArrowBackIcon, DownloadIcon } from '@chakra-ui/icons'
+import StatusBox from "./StatusBox";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
 
-function GenerateTweetsButton(props) {
-  return(
-    <button
-      onClick={props.generateTweets}> Generate More Tweets
-    </button>
-  )
-}
-
-function BackButton(props) {
-  return(
-    <button
-      onClick={props.reset}> Back
-    </button>
-  )
-}
+library.add(fab)
 
 function ModelDisplayArea(props) {
   // takes a response from the markovify_user api and displays the user details and background of the tweets
   // has a button to generate tweets from the model
-
 
   const twitterNumber = (number) => {
     // takes a number and returns a string in the format "X.XXm" or "X.XXk"
@@ -97,6 +90,7 @@ function ModelDisplayArea(props) {
             </StatGroup>
           </Box>
         </Flex>
+        <Divider h={3} />
         <CardHeader>
           <Heading size='md' textAlign={"center"}>Model Details</Heading>
         </CardHeader>
@@ -117,7 +111,7 @@ function ModelDisplayArea(props) {
           </Stat>
           <Stat>
             <StatLabel>
-              Tweet Date Range
+              Tweet Dates
             </StatLabel>
             <StatNumber fontSize="sm">
               {props.userModel.modelDate[0]}
@@ -130,12 +124,22 @@ function ModelDisplayArea(props) {
             </StatNumber>
           </Stat>
         </StatGroup>
+        <Divider h={3} />
+        <Flex justifyContent={"space-between"}>
+          <Button onClick={props.reset} colorScheme="teal">
+            <ArrowBackIcon/>Back
+          </Button>
+          <Button onClick={props.generateTweets} colorScheme="teal">
+            <FontAwesomeIcon icon={['fab', 'twitter']} /><Spacer mr="1" />Generate More Tweets
+          </Button>
+          <Button onClick={props.exportToJson} colorScheme="teal">
+            <DownloadIcon /> Save Model
+          </Button>
+        </Flex>
       </Card>
-      <GenerateTweetsButton
-      model={props.userModel.currentModel}
-      setTweets={props.setTweets}
-      generateTweets={props.generateTweets} />
-      <BackButton reset={props.reset}/>
+      {
+        props.status && <StatusBox status={props.status}/>
+      }
     </div>
   )
 }

@@ -38,7 +38,8 @@ function StartScreen(props) {
                 </Text>
               </Flex>
             </Box>
-            <Box>
+            <Box m={"0 auto"}><props.ImportJsonButton /></Box>
+            {/* <Box>
               <Text pt='2' fontSize='md'>
                 About
               </Text>
@@ -50,7 +51,7 @@ function StartScreen(props) {
               <Text pt='2' fontSize='md'>
                 Made using jsvine's Markovify library.
               </Text>
-            </Box>
+            </Box> */}
           </Stack>
         </CardBody>
       </Card>

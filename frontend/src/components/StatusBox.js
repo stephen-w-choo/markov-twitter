@@ -7,15 +7,14 @@ function StatusBox(props) {
   return(
     <div className="loading-box">
       <FadeIn>
-        {props.status.loading && <GridLoader color="#36d7b7" />}
         {props.status.loading &&
           <Alert
           status='info'
           variant='subtle'
-          flexDirection='column'
           alignItems='center'
-          justifyContent='center'
           textAlign={'left'}
+          justifyContent='center'
+          p={6}
           >
             <Spinner
               thickness='4px'
@@ -23,6 +22,9 @@ function StatusBox(props) {
               emptyColor='gray.200'
               color='blue.500'
               size='xl'
+              mr={10}
+              position='absolute'
+              left='20px'
             />
             {props.status.message}
           </Alert>
@@ -31,9 +33,7 @@ function StatusBox(props) {
           <Alert
           status='warning'
           variant='subtle'
-          flexDirection='column'
           alignItems='center'
-          justifyContent='center'
           textAlign={'left'}
           >
             <AlertIcon />

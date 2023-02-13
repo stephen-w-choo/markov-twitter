@@ -4,13 +4,15 @@ import './css/start.css';
 import './css/model.css';
 import './css/tweet.css';
 import React, { useState } from "react";
-import { ChakraProvider, Container } from '@chakra-ui/react'
+import { Button, ChakraProvider, Container, FormControl, FormLabel, Input, VisuallyHiddenInput } from '@chakra-ui/react'
 
 import TitleBar from './components/TitleBar';
 import ModelDisplayArea from './components/ModelDisplayArea';
 import StartScreen from './components/StartScreen';
-import StatusBox from "./components/StatusBox";
 import TweetDisplayArea from './components/TweetDisplayArea';
+
+// this file WILL eventually be refactored
+// I sincerely apologise for this mess
 
 
 function App() {
@@ -73,7 +75,6 @@ function App() {
   }, [tweets])
 
   const generateTweets = (event) => {
-    console.log(userModel)
     setStatus({
       loading: true,
       message: "Generating tweets...",
@@ -114,6 +115,76 @@ function App() {
 
   const resetTweets = () => setTweets([])
 
+  const downloadFile = ({ data, fileName, fileType }) => {
+    // Create a blob with the data we want to download as a file
+    const blob = new Blob([data], { type: fileType })
+    // Create an anchor element and dispatch a click event on it
+    // to trigger a download
+    const a = document.createElement('a')
+    a.download = fileName
+    a.href = window.URL.createObjectURL(blob)
+    const clickEvt = new MouseEvent('click', {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+    })
+    a.dispatchEvent(clickEvt)
+    a.remove()
+  }
+
+  const exportToJson = e => {
+    e.preventDefault()
+    downloadFile({
+      data: JSON.stringify(userModel),
+      fileName: `${userModel.userHandle}_model.json`,
+      fileType: 'text/json',
+    })
+  }
+
+  const importJson = e => {
+    e.preventDefault()
+    const file = e.target.files[0]
+    const reader = new FileReader()
+    reader.onload = e => {
+      const json = JSON.parse(e.target.result)
+      setUserModel(json)
+    }
+    reader.readAsText(file)
+  }
+
+  const ImportJsonButton = () => {
+    return (
+      <div>
+        <Button colorScheme={"teal"}>
+        <FormLabel
+          htmlFor="import-json"
+          className="import-button"
+          h="100%"
+          w="100%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          m="0"
+          _hover={{ cursor: "pointer" }}
+        >
+            Upload a previous model (.json)
+          <Input
+          colorScheme={"teal"}
+          type="file"
+          id="import-json"
+          accept=".json"
+          onChange={importJson}
+          h="100%"
+          w="100%"
+          display="none"
+        />
+        </FormLabel>
+        </Button>
+
+      </div>
+    )
+  }
+
   return (
     <ChakraProvider>
       <div className="App">
@@ -129,20 +200,21 @@ function App() {
                 status={status}
                 setStatus={setStatus}
                 primaryColor={primaryColor}
+                ImportJsonButton={ImportJsonButton}
               />
             }
 
             { userModel.user &&
               <ModelDisplayArea
-              userModel={userModel}
-              setTweets={setTweets}
-              generateTweets={generateTweets}
-              reset={reset}/>
+                userModel={userModel}
+                setTweets={setTweets}
+                generateTweets={generateTweets}
+                reset={reset}
+                status={status}
+                exportToJson={exportToJson}
+              />
             }
             <TweetDisplayArea key={tweetKey} tweets={tweets} userModel={userModel} generateTweets={generateTweets}/>
-            {
-              status && <StatusBox status={status.show}/>
-            }
           </Container>
         </header>
       </div>

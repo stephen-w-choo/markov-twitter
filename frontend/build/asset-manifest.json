@@ -1,16 +1,24 @@
 {
   "files": {
-    "main.css": "/static/css/main.b605eab6.css",
-    "main.js": "/static/js/main.d13e5a46.js",
+    "main.css": "/static/css/main.c2a3a5f6.css",
+    "main.js": "/static/js/main.90bdfb91.js",
     "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
-    "static/media/AAMarkov.jpg": "/static/media/AAMarkov.cf9218eaa58f907c4ab2.jpg",
+    "static/media/Ubuntu-Italic.ttf": "/static/media/Ubuntu-Italic.fbb3310412795b02afc4.ttf",
+    "static/media/Ubuntu-Regular.ttf": "/static/media/Ubuntu-Regular.1cbb1b79a23478cc89ad.ttf",
+    "static/media/Ubuntu-Bold.ttf": "/static/media/Ubuntu-Bold.fec2d0f1431a6114a6ce.ttf",
+    "static/media/logo.png": "/static/media/logo.88dd1284561829a986cd.png",
+    "static/media/SegoeUI-Bold-Italic.ttf": "/static/media/SegoeUI-Bold-Italic.1dc286eeecb0da1dd712.ttf",
+    "static/media/SegoeUI-Italic.ttf": "/static/media/SegoeUI-Italic.cba58501ca412000495c.ttf",
+    "static/media/SegoeUI-Bold.ttf": "/static/media/SegoeUI-Bold.b00928e669b804136004.ttf",
+    "static/media/SegoeUI.ttf": "/static/media/SegoeUI.45472284dc36b2486ce2.ttf",
+    "static/media/arrow-up-diagonal.png": "/static/media/arrow-up-diagonal.d193fb281972d484991e.png",
     "index.html": "/index.html",
-    "main.b605eab6.css.map": "/static/css/main.b605eab6.css.map",
-    "main.d13e5a46.js.map": "/static/js/main.d13e5a46.js.map",
+    "main.c2a3a5f6.css.map": "/static/css/main.c2a3a5f6.css.map",
+    "main.90bdfb91.js.map": "/static/js/main.90bdfb91.js.map",
     "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.b605eab6.css",
-    "static/js/main.d13e5a46.js"
+    "static/css/main.c2a3a5f6.css",
+    "static/js/main.90bdfb91.js"
   ]
 }
