@@ -13,7 +13,7 @@ headers = {
     'Authorization': os.getenv("AUTHORIZATION")
 }
 
-application = app = Flask(__name__, static_folder='frontend/build', static_url_path='/')
+application = Flask(__name__, static_folder='frontend/build', static_url_path='/')
 
 # CORS(app)
 
@@ -77,3 +77,9 @@ def generate_tweets():
         return jsonify({
             "tweets": res
         })
+
+if __name__ == "__main__":
+    # Setting debug to True enables debug output. This line should be
+    # removed before deploying a production app.
+    application.debug = True
+    application.run()

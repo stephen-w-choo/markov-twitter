@@ -10,6 +10,5 @@ jsonschema==3.2.0
 MarkupSafe==2.1.1
 markovify==0.9.4
 python-dotenv==0.21.0
-re==2.2.1
 requests==2.25.1
 Werkzeug==2.1.0
