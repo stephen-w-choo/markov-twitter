@@ -1,6 +1,4 @@
 from flask import Flask, request, jsonify
-import requests
-import json
 import markovify
 from dotenv import load_dotenv
 import twitter_api_helpers
@@ -17,7 +15,7 @@ headers = {
 
 application = app = Flask(__name__, static_folder='frontend/build', static_url_path='/')
 
-CORS(app)
+# CORS(app)
 
 
 @app.route("/")
