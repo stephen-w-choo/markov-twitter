@@ -67,7 +67,7 @@ function App() {
   React.useEffect(() => { // generates tweets when the model is loaded
     if (userModel.currentModel) { // this is because the new functional setstate doesn't update the state immediately
       generateTweets() // and doesn't allow for callbacks immediately after the state is set
-    }
+    }                   // there's probably a better way to do this
   }, [userModel.currentModel])
 
   React.useEffect(() => { // sets a key to the tweets to force remounting of the tweet display area
@@ -81,7 +81,7 @@ function App() {
       show: true,
       error: false
     })
-    fetch("http://localhost:5000/generate_tweets", {
+    fetch("/generate_tweets", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.,
       headers: {
         'Accept': 'application/json',

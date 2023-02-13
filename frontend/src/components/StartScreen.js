@@ -1,5 +1,16 @@
 import UserForm from "./UserForm";
-import { Box, Card, CardBody, Flex, Heading, Image, Spacer, Stack, StackDivider, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Card,
+  CardBody,
+  Flex,
+  Heading,
+  Image,
+  Link,
+  Stack,
+  StackDivider,
+  Text
+} from "@chakra-ui/react";
 
 function StartScreen(props) {
   return (
@@ -7,13 +18,16 @@ function StartScreen(props) {
       <Card p='5'>
         <CardBody>
           <Stack divider={<StackDivider />} spacing='9'>
-            <Flex maxW={"80ch"} margin={"0 auto"} justifyContent={"space-between"}>
+            <Box maxW={"80ch"} margin={"0 auto"}>
               <Heading fontSize={"xl"}>
                 Make your own simple language models - and use them to generate tweets!
-                Powered by Markovify.
+
               </Heading>
+              <Link href="https://github.com/jsvine/markovify">
+                <Text mt={3}>Made using jsvine's Markovify library.</Text>
+              </Link>
               {/* <Spacer /> */}
-            </Flex>
+            </Box>
             <Box>
               <Flex direction='row' spacing='3' alignItems={"center"} justifyContent={"center"} maxW={"50ch"} margin={"0 auto"}>
                 <Image src={ require('../images/icons/arrow-down.png') } alt="arrow-down" h={"20px"} m="20px 15px 0px 15px" />
