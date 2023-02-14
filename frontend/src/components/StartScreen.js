@@ -20,8 +20,7 @@ function StartScreen(props) {
           <Stack divider={<StackDivider />} spacing='9'>
             <Box maxW={"80ch"} margin={"0 auto"}>
               <Heading fontSize={"xl"}>
-                Make your own simple language models - and use them to generate tweets!
-
+                Make your own simple language models to generate tweets
               </Heading>
               <Link href="https://github.com/jsvine/markovify">
                 <Text mt={3}>Made using jsvine's Markovify library.</Text>
@@ -45,7 +44,7 @@ function StartScreen(props) {
                 primaryColor={props.primaryColor}
               />
               <Flex direction='row' spacing='3' justifyContent={"center"} maxW={"50ch"} margin={"20px auto"}>
-                <Image src={ require('../images/icons/arrow-up-diagonal.png') } alt="arrow-down" h={"30px"} m="0px 15px 0px 15px" />
+                <Image src={ require('../images/icons/arrow-up.png') } alt="arrow-down" h={"20px"} m="0px 15px 0px 15px" />
                 <Text pt='2' fontSize='md'>
                   You can adjust the number of tweets used to train the model - the more
                   tweets, the more accurate the model, but the longer it will take to generate.

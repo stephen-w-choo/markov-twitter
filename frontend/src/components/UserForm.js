@@ -15,6 +15,7 @@ import {
   InputLeftElement,
   InputLeftAddon,
   Spacer,
+  Text,
   useMediaQuery } from "@chakra-ui/react";
 import { AtSignIcon } from '@chakra-ui/icons'
 import StatusBox from "./StatusBox";
@@ -94,7 +95,7 @@ function UserForm(props) {
   return (
     <div>
       <Flex flexDir={"column"}>
-        <FormControl isInvalid={props.status.error} >
+        <FormControl isInvalid={props.status.error} mt={"-20px"} mb={"-20px"}>
           <InputGroup margin={'30px auto'} maxW={'50ch'}>
             <InputLeftElement
               pointerEvents="none"
@@ -111,7 +112,7 @@ function UserForm(props) {
               id = "search-input"
               variant="filled"
               name = "username"
-              placeholder = "Twitter handle eg BarackObama, AlboMP"
+              placeholder = "eg BarackObama, AlboMP"
               value = {query.username}
               onChange = {handleChange}
               pl={8}
@@ -130,8 +131,9 @@ function UserForm(props) {
             justifyContent="space-around"
             alignItems="center"
             flexDir={layout}
+            mt={3}
           >
-            <Box w={"100%"} maxW={"300px"} m={3}>
+            <Box w={"100%"} maxW={"400px"} m={"25px 30px 0px 10px"}>
               <TweetSlider tweetN={tweetN} setTweetN={setTweetN} defaultTweetN={defaultTweetN} primaryColor={props.primaryColor} />
             </Box>
             <Button
@@ -140,8 +142,14 @@ function UserForm(props) {
               colorScheme={'teal'}
               isDisabled={tweetN === 0}
               m={3}
+              maxW={"300px"}
+              w={"100%"}
+              ml={3}
             >
-              <FontAwesomeIcon icon={['fab', 'twitter']} /><Spacer mr="1" />{`Generate model`}
+              <FontAwesomeIcon icon={['fab', 'twitter']} />
+              <Text as="span" ml={2}>
+              {`Generate model`}
+              </Text>
             </Button>
           </Flex>
         }

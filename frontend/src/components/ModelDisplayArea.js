@@ -125,14 +125,14 @@ function ModelDisplayArea(props) {
           </Stat>
         </StatGroup>
         <Divider h={3} />
-        <Flex justifyContent={"space-between"}>
-          <Button onClick={props.reset} colorScheme="teal">
+        <Flex justifyContent={"space-around"} flexWrap={"wrap"}>
+          <Button onClick={props.reset} colorScheme="teal" m={2}>
             <ArrowBackIcon/>Back
           </Button>
-          <Button onClick={props.generateTweets} colorScheme="teal">
+          <Button onClick={props.generateTweets} colorScheme="teal" m={2}>
             <FontAwesomeIcon icon={['fab', 'twitter']} /><Spacer mr="1" />Generate More Tweets
           </Button>
-          <Button onClick={props.exportToJson} colorScheme="teal">
+          <Button onClick={props.exportToJson} colorScheme="teal" m={2}>
             <DownloadIcon /> Save Model
           </Button>
         </Flex>
