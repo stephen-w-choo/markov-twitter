@@ -45,7 +45,7 @@ function TweetSlider(props) {
           bg="teal"
           color='white'
           mt='-12'
-          ml='-8'
+          ml='-60px'
           whiteSpace={'nowrap'}
           borderRadius='md'
           p={1}
