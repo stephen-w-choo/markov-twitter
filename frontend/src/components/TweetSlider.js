@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {
   Box,
   Slider,
@@ -20,7 +20,7 @@ function TweetSlider(props) {
     <Box pt={6} pb={2}>
       <Slider
         aria-label='slider-ex-6'
-        defaultValue={props.defaultTweetN}
+        defaultValue={props.tweetN}
         min={0}
         max={1600}
         onChange={(val) => {

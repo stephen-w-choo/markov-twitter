@@ -8,13 +8,9 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
-  Heading,
-  HStack,
   Input,
   InputGroup,
   InputLeftElement,
-  InputLeftAddon,
-  Spacer,
   Text,
   useMediaQuery } from "@chakra-ui/react";
 import { AtSignIcon } from '@chakra-ui/icons'
@@ -134,7 +130,7 @@ function UserForm(props) {
             mt={3}
           >
             <Box w={"100%"} maxW={"400px"} m={"25px 30px 0px 10px"}>
-              <TweetSlider tweetN={tweetN} setTweetN={setTweetN} defaultTweetN={defaultTweetN} primaryColor={props.primaryColor} />
+              <TweetSlider tweetN={tweetN} setTweetN={setTweetN} primaryColor={props.primaryColor} />
             </Box>
             <Button
               onClick={handleSubmit}
