@@ -1,8 +1,18 @@
+import nltk
+
 def word_frequency(text):
     # Takes a string and returns a dictionary of word frequencies
     words = text.split()
     word_freq = {}
+    stop_words = set(nltk.corpus.stopwords.words('english'))
     for word in words:
+        # downcase
+        word = word.lower()
+        # remove punctuation, leaving @ and # for hashtags and mentions
+        word = word.strip(".,!?;:()[]{}")
+        # skip stopwords
+        if word in stop_words:
+            continue
         if word in word_freq:
             word_freq[word] += 1
         else:

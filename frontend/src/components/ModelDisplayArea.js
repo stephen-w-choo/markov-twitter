@@ -126,7 +126,15 @@ function ModelDisplayArea(props) {
           </Stat>
         </StatGroup>
         { console.log(props.userModel)}
-        <WordCloudBox wordCloud={props.userModel.wordCloud}/>
+        <Flex justifyContent={"center"} flexWrap="wrap">
+          <Box maxW="20ch">
+            <Text fontSize="sm" textAlign={"center"}>Most common words in tweets</Text>
+            <WordCloudBox wordCloud={props.userModel.wordCloud}/>
+          </Box>
+          <Box>
+
+          </Box>
+        </Flex>
         <Divider h={3} />
         <Flex justifyContent={"space-around"} flexWrap={"wrap"}>
           <Button onClick={props.reset} colorScheme="teal" m={2}>
