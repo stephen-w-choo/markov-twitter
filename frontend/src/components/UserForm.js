@@ -75,6 +75,7 @@ function UserForm(props) {
         currentModel: response.model,
         modelSize: response.modelSize,
         modelDate: response.modelDate,
+        wordCloud: response.wordCloud,
       })
     })
     .catch( (error) => {

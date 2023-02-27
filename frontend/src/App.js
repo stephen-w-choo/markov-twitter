@@ -39,6 +39,7 @@ function App() {
     currentModel: null, // unsure - storing the markov model in the state is probably a bit much - would be better in the session storage
     modelSize: null,
     modelDate: null,
+    wordCloud: null,
   })
 
   const reset = () => {
@@ -51,6 +52,7 @@ function App() {
       currentModel: null, // unsure - storing the markov model in the state is probably a bit much - would be better in the session storage
       modelSize: null,
       modelDate: null,
+      wordCloud: null,
     })
     setTweets([])
     setStatus({

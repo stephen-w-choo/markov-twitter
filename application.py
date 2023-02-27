@@ -3,6 +3,7 @@ import markovify
 from dotenv import load_dotenv
 import twitter_api_helpers
 import language_helpers
+import data_processing
 import os
 from flask_cors import CORS, cross_origin
 
@@ -45,13 +46,12 @@ def markovify_user():
     # replace 'normal' with '400x400' to get the larger profile picture
     user_data["profile_image_url"] = user_data["profile_image_url"].replace("normal", "400x400")
 
-
     # get the corpus, to be returned as a json object
     corpus, model_word_count, model_tweet_count, model_start_date, model_end_date= twitter_api_helpers.twitter_user_to_corpus(user_id, headers, payload, tweet_n)
     corpus = language_helpers.filter(corpus)
+    word_cloud = data_processing.word_cloud(corpus)
     text_model = markovify.Text(corpus, retain_original=False)
     model_json = text_model.to_json()
-
 
     return jsonify(
         {
@@ -63,6 +63,7 @@ def markovify_user():
             "username": username,
             "userJoined": language_helpers.string_to_date(user_data["created_at"]).strftime("%b %Y"),
             "userProfilePicture": user_data["profile_image_url"],
+            "wordCloud": word_cloud
             }
         )
 

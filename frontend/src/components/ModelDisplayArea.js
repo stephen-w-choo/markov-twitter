@@ -22,6 +22,7 @@ import StatusBox from "./StatusBox";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
+import WordCloudBox from "./WordCloud";
 
 library.add(fab)
 
@@ -124,6 +125,8 @@ function ModelDisplayArea(props) {
             </StatNumber>
           </Stat>
         </StatGroup>
+        { console.log(props.userModel)}
+        <WordCloudBox wordCloud={props.userModel.wordCloud}/>
         <Divider h={3} />
         <Flex justifyContent={"space-around"} flexWrap={"wrap"}>
           <Button onClick={props.reset} colorScheme="teal" m={2}>
