@@ -47,9 +47,12 @@ def markovify_user():
     user_data["profile_image_url"] = user_data["profile_image_url"].replace("normal", "400x400")
 
     # get the corpus, to be returned as a json object
-    corpus, model_word_count, model_tweet_count, model_start_date, model_end_date= twitter_api_helpers.twitter_user_to_corpus(user_id, headers, payload, tweet_n)
-    corpus = language_helpers.filter(corpus)
+    tweet_list, model_tweet_count, model_start_date, model_end_date= twitter_api_helpers.twitter_user_to_corpus(user_id, headers, payload, tweet_n)
+    corpus = language_helpers.filter("\n".join(tweet_list))
+    model_word_count = len(corpus.split())
     word_cloud = data_processing.word_cloud(corpus)
+    aggregate_sentiment = data_processing.aggregate_sentiment(tweet_list)
+
     text_model = markovify.Text(corpus, retain_original=False)
     model_json = text_model.to_json()
 
@@ -63,7 +66,10 @@ def markovify_user():
             "username": username,
             "userJoined": language_helpers.string_to_date(user_data["created_at"]).strftime("%b %Y"),
             "userProfilePicture": user_data["profile_image_url"],
-            "wordCloud": word_cloud
+            "analytics": {
+                "aggregateSentiment": aggregate_sentiment,
+                "wordCloud": word_cloud
+                }
             }
         )
 

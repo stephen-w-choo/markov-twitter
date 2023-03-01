@@ -23,6 +23,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import WordCloudBox from "./WordCloud";
+import SentimentGraph from "./SentimentGraph";
 
 library.add(fab)
 
@@ -127,12 +128,12 @@ function ModelDisplayArea(props) {
         </StatGroup>
         { console.log(props.userModel)}
         <Flex justifyContent={"center"} flexWrap="wrap">
-          <Box maxW="20ch">
+          <Box maxW="35ch">
             <Text fontSize="sm" textAlign={"center"}>Most common words in tweets</Text>
-            <WordCloudBox wordCloud={props.userModel.wordCloud}/>
+            <WordCloudBox wordCloud={props.userModel.analytics.wordCloud}/>
           </Box>
-          <Box>
-
+          <Box maxW="35ch" h="300px">
+            <SentimentGraph data={props.userModel.analytics.aggregateSentiment}/>
           </Box>
         </Flex>
         <Divider h={3} />

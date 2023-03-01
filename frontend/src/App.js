@@ -31,6 +31,7 @@ function App() {
   // const [currentScreen, setCurrentScreen] = useState("start")
 
   const [userModel, setUserModel] = useState({
+    analytics: null,
     user: null,
     userHandle: null,
     userProfilePicture: null,
@@ -39,20 +40,19 @@ function App() {
     currentModel: null, // unsure - storing the markov model in the state is probably a bit much - would be better in the session storage
     modelSize: null,
     modelDate: null,
-    wordCloud: null,
   })
 
   const reset = () => {
     setUserModel({
+      analytics: null,
       user: null,
       userHandle: null,
       userProfilePicture: null,
       userMetrics: null,
       userJoined: null,
-      currentModel: null, // unsure - storing the markov model in the state is probably a bit much - would be better in the session storage
+      currentModel: null,
       modelSize: null,
       modelDate: null,
-      wordCloud: null,
     })
     setTweets([])
     setStatus({
@@ -66,7 +66,7 @@ function App() {
 
   const [tweetKey, setTweetKey] = useState(0)
 
-  React.useEffect(() => { // generates tweets when the model is loaded
+  React.useEffect(() => { // generates tweets when the model is loaded or changed
     if (userModel.currentModel) { // this is because the new functional setstate doesn't update the state immediately
       generateTweets() // and doesn't allow for callbacks immediately after the state is set
     }                   // there's probably a better way to do this

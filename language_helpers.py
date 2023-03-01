@@ -1,19 +1,17 @@
-import requests
 import json
-import markovify
 import re
+
 from datetime import datetime
 
 def filter(string):
     # Takes a string filters out unwanted words and returns the filtered string
     res = re.sub(r"http\S+", "", string)
-
     return res
 
-def aggregate_sentiment(tweets):
-    # Takes a list of tweets and returns the aggregate compounded sentiment
-    pass
-
+def word_count(string):
+    # Takes a string and returns the number of words in the string
+    return len(string.split())
+    
 def string_to_date(date_string: str) -> datetime:
     # takes a date string and returns a datetime object
     return datetime.strptime(date_string, "%Y-%m-%dT%H:%M:%S.%fZ")
