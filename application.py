@@ -25,6 +25,7 @@ app = application
 def index():
     return app.send_static_file('index.html')
 
+
 # returns a Markov model in json format
 @app.route("/markovify_user")
 @cross_origin() # to be removed after development
@@ -79,7 +80,13 @@ def markovify_user():
 def generate_tweets():
     if request.method == 'POST':
         res = []
-        text_model = markovify.Text.from_json(request.get_json())
+        request_json = request.get_json()
+        print(request_json)
+        text_model = markovify.Text.from_json(request_json["model"])
+
+        # if "prompt" in request_json:
+        #     res.append
+
         for i in range(5):
             res.append(text_model.make_sentence())
 

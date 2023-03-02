@@ -49,6 +49,7 @@ function ModelDisplayArea(props) {
         overflow='hidden'
         variant='outline'
         p='3'
+        mb='3'
       >
         <Flex justifyContent={"center"} alignItems={"center"}>
           <Image
@@ -127,17 +128,23 @@ function ModelDisplayArea(props) {
           </Stat>
         </StatGroup>
         { console.log(props.userModel)}
-        <Flex justifyContent={"center"} flexWrap="wrap">
-          <Box maxW="35ch">
-            <Text fontSize="sm" textAlign={"center"}>Most common words in tweets</Text>
+        </Card>
+        <Flex justifyContent={"space-around"} alignItems={"center"} flexWrap={"wrap"}>
+          <Card maxW="40ch" m={2} p={3} h="300px" alignItems={"center"}>
+            <CardHeader p={0} mb={3}>
+              <Heading size='md'> Commonly used words </Heading>
+            </CardHeader>
             <WordCloudBox wordCloud={props.userModel.analytics.wordCloud}/>
-          </Box>
-          <Box maxW="35ch" h="300px">
+          </Card>
+          <Card maxW="40ch" m={2} p={3} h="300px" alignItems={"center"} flexGrow={1}>
+            <CardHeader p={0}>
+              <Heading size='md'> Overall sentiment </Heading>
+            </CardHeader>
             <SentimentGraph data={props.userModel.analytics.aggregateSentiment}/>
-          </Box>
+          </Card>
         </Flex>
         <Divider h={3} />
-        <Flex justifyContent={"space-around"} flexWrap={"wrap"}>
+        <Card flexDir={"row"} justifyContent={"space-around"} flexWrap={"wrap"}>
           <Button onClick={props.reset} colorScheme="teal" m={2}>
             <ArrowBackIcon/>Back
           </Button>
@@ -147,8 +154,8 @@ function ModelDisplayArea(props) {
           <Button onClick={props.exportToJson} colorScheme="teal" m={2}>
             <DownloadIcon /> Save Model
           </Button>
-        </Flex>
-      </Card>
+        </Card>
+
       {
         props.status && <StatusBox status={props.status}/>
       }

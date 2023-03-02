@@ -1,6 +1,7 @@
 import {
   AreaChart,
   Area,
+  Label,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -8,7 +9,11 @@ import {
   ResponsiveContainer
 } from 'recharts';
 
-import { Box } from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  Heading,
+} from '@chakra-ui/react'
 
 function SentimentGraph({data}) {
   const processDataForGraph = (data) => {
@@ -25,7 +30,7 @@ function SentimentGraph({data}) {
   }
 
   return(
-    <Box h="200px" w="280px">
+    <Box h="100%" w="280px" pb="50px">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           width={200}
@@ -38,9 +43,20 @@ function SentimentGraph({data}) {
             bottom: 5,
           }}
         >
-          <Area type="monotone" dataKey="count" stroke="#8884d8" fill="#8884d8" />
+          <defs>
+            <linearGradient id="colorPv" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="5%" stopColor="red"/>
+              <stop offset="95%" stopColor="green"/>
+            </linearGradient>
+          </defs>
+          <Area type="monotone" dataKey="count" stroke="#8884d8" fill="url(#colorPv)" />
         </AreaChart>
+
       </ResponsiveContainer>
+      <Flex justifyContent="space-between">
+        <Heading size="xs">Negative</Heading>
+        <Heading size="xs">Positive</Heading>
+      </Flex>
     </Box>
   )
 }

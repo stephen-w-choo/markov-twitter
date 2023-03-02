@@ -3,6 +3,7 @@ import { TagCloud } from 'react-tagcloud'
 import WordCloud from 'react-d3-cloud';
 import { scaleOrdinal } from 'd3-scale';
 import { schemeCategory10 } from 'd3-scale-chromatic';
+import FadeIn from 'react-fade-in/lib/FadeIn';
 
 
 function WordCloudBox({wordCloud}) {
@@ -19,7 +20,10 @@ function WordCloudBox({wordCloud}) {
       maxSize={35}
       tags={wordCloud}
       colorOptions={options}
-      shuffle={true}
+      shuffle={false}
+      style={{
+        margin: 'auto 0',
+      }}
     />
     // <WordCloud
     // data={wordCloud}

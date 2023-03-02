@@ -89,7 +89,9 @@ function App() {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(userModel.currentModel)
+      body: JSON.stringify({
+          model: userModel.currentModel
+        })
       // body: JSON.stringify(["test"])
     })
     .then(response => {
