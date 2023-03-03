@@ -5,17 +5,17 @@ function TweetDisplayArea(props) {
   return (
     <div>
       { props.tweets.length > 0 &&
-      <Card m={"20px auto"} p={3} maxW={"500px"}>
+      <Card m={"20px auto"} p={3} maxW={"500px"} justifyContent="center">
         <Heading size="md" textAlign={"center"}>
           Generated Tweets
         </Heading>
-        <Flex justifyContent={"center"}>
-          <FadeIn className="tweet-display-area">
+        <FadeIn className="tweet-display-area">
+          <Flex flexDir="column" alignItems={"center"}>
             {props.tweets.map( (tweet, index) => {
               return <TweetBox userModel={props.userModel} tweet={tweet} key={index}/>
             })}
-          </FadeIn>
-        </Flex>
+          </Flex>
+        </FadeIn>
       </Card>
     }
     </div>

@@ -2,7 +2,6 @@
   display: inline-block;
   background-color: #e6ecf0;
   color: black;
-  width: min(600px, 90vw);
   text-align: left;
   font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
   font-size: 12px;
@@ -13,8 +12,9 @@
   border-style: solid;
   border-width: 1px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-  margin: 10px 5px;
+  margin: 10px 0px;
   padding: 16px;
+  width: 100%;
   max-width: 468px;
 }
 

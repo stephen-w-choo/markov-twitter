@@ -1,7 +1,7 @@
 import React from "react";
 import FadeIn from 'react-fade-in';
 import { GridLoader } from 'react-spinners';
-import { Alert, AlertIcon, Spinner } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, Flex, Spinner, Text } from "@chakra-ui/react";
 
 function StatusBox(props) {
   return(
@@ -13,20 +13,21 @@ function StatusBox(props) {
           variant='subtle'
           alignItems='center'
           textAlign={'left'}
-          justifyContent='center'
-          p={6}
+          justifyContent={'space-around'}
+          flexWrap={'wrap'}
+          p={4}
           >
             <Spinner
+              as="span"
               thickness='4px'
               speed='0.65s'
               emptyColor='gray.200'
               color='blue.500'
-              size='xl'
-              mr={10}
-              position='absolute'
-              left='20px'
+              size='lg'
+              m={4}
+              flexShrink={0}
             />
-            {props.status.message}
+            <Box flexGrow="1">{props.status.message}</Box>
           </Alert>
         }
         {!props.status.loading && props.status.message &&
