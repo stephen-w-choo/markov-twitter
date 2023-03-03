@@ -8,7 +8,7 @@ import { Button, ChakraProvider, Container, FormControl, FormLabel, Input, Visua
 
 import TitleBar from './components/TitleBar';
 import ModelDisplayArea from './components/ModelDisplayArea';
-import StartScreen from './components/StartScreen';
+import StartScreen from './screens/StartScreen';
 import TweetDisplayArea from './components/TweetDisplayArea';
 
 // this file WILL eventually be refactored
