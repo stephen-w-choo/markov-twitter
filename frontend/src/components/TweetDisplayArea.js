@@ -1,5 +1,10 @@
 import FadeIn from 'react-fade-in';
-import { Card, Heading, Flex } from "@chakra-ui/react";
+import { Button, Card, Heading, Flex, Spacer } from "@chakra-ui/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+
+library.add(fab)
 
 function TweetDisplayArea(props) {
   return (
@@ -9,6 +14,9 @@ function TweetDisplayArea(props) {
         <Heading size="md" textAlign={"center"}>
           Generated Tweets
         </Heading>
+        <Button onClick={props.generateTweets} colorScheme="teal" m={2} alignSelf="center">
+          <FontAwesomeIcon icon={['fab', 'twitter']} /><Spacer mr="1" />Generate More Tweets
+        </Button>
         <FadeIn className="tweet-display-area">
           <Flex flexDir="column" alignItems={"center"}>
             {props.tweets.map( (tweet, index) => {

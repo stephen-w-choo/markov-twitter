@@ -1,0 +1,1 @@
+git archive -v -o ../markov.zip --format=zip HEAD
