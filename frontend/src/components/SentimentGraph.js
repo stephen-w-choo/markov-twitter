@@ -1,11 +1,6 @@
 import {
   AreaChart,
   Area,
-  Label,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
   ResponsiveContainer
 } from 'recharts';
 

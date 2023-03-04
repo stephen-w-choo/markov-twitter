@@ -45,12 +45,14 @@ function ModelDisplayArea(props) {
 
   return (
     <div className="model-display-area">
+
       <Card
         overflow='hidden'
         variant='outline'
         p='3'
         mb='3'
       >
+
         <Flex justifyContent={"center"} alignItems={"center"}>
           <Image
             objectFit='cover'
@@ -127,33 +129,36 @@ function ModelDisplayArea(props) {
             </StatNumber>
           </Stat>
         </StatGroup>
-        { console.log(props.userModel)}
+
+        <Card flexDir={"row"} justifyContent={"space-around"} flexWrap={"wrap"} variant="outline">
+          <Button onClick={props.reset} colorScheme="teal" m={2} minW="100px">
+            <ArrowBackIcon mr="5px"/> Back
+          </Button>
+          <Button onClick={props.exportToJson} colorScheme="teal" m={2}>
+            <DownloadIcon mr="10px"/> Save Model
+          </Button>
         </Card>
+
+        <CardHeader>
+          <Heading size='md' textAlign={"center"}>Analytics</Heading>
+        </CardHeader>
+
         <Flex justifyContent={"space-around"} alignItems={"center"} flexWrap={"wrap"}>
-          <Card maxW="40ch" m={2} p={3} h="300px" alignItems={"center"}>
+          <Card maxW="40ch" m={2} p={3} minH="300px" alignItems={"center"} variant="filled">
             <CardHeader p={0} mb={3}>
               <Heading size='md'> Commonly used words </Heading>
             </CardHeader>
             <WordCloudBox wordCloud={props.userModel.analytics.wordCloud}/>
           </Card>
-          <Card maxW="40ch" m={2} p={3} h="300px" alignItems={"center"} flexGrow={1}>
+          <Card maxW="40ch" m={2} p={3} h="300px" alignItems={"center"} variant="filled" flexGrow={1}>
             <CardHeader p={0}>
-              <Heading size='md'> Overall sentiment </Heading>
+              <Heading size='md'> Sentiment Analysis </Heading>
             </CardHeader>
             <SentimentGraph data={props.userModel.analytics.aggregateSentiment}/>
           </Card>
         </Flex>
         <Divider h={3} />
-        <Card flexDir={"row"} justifyContent={"space-around"} flexWrap={"wrap"}>
-          <Button onClick={props.reset} colorScheme="teal" m={2}>
-            <ArrowBackIcon/>Back
-          </Button>
-          <Button onClick={props.generateTweets} colorScheme="teal" m={2}>
-            <FontAwesomeIcon icon={['fab', 'twitter']} /><Spacer mr="1" />Generate More Tweets
-          </Button>
-          <Button onClick={props.exportToJson} colorScheme="teal" m={2}>
-            <DownloadIcon /> Save Model
-          </Button>
+
         </Card>
 
       {

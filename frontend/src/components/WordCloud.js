@@ -21,9 +21,6 @@ function WordCloudBox({wordCloud}) {
       tags={wordCloud}
       colorOptions={options}
       shuffle={false}
-      style={{
-        margin: 'auto 0',
-      }}
     />
     // <WordCloud
     // data={wordCloud}
