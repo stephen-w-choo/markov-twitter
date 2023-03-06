@@ -9,7 +9,6 @@ import {
   Flex,
   Heading,
   Image,
-  Spacer,
   StatGroup,
   Stat,
   StatLabel,
@@ -18,8 +17,7 @@ import {
   Text,
  } from "@chakra-ui/react";
 import { ArrowBackIcon, DownloadIcon } from '@chakra-ui/icons'
-import StatusBox from "./StatusBox";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import StatusBox from "../components/StatusBox";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import WordCloudBox from "./WordCloud";
@@ -52,7 +50,6 @@ function ModelDisplayArea(props) {
         p='3'
         mb='3'
       >
-
         <Flex justifyContent={"center"} alignItems={"center"}>
           <Image
             objectFit='cover'
@@ -138,13 +135,11 @@ function ModelDisplayArea(props) {
             <DownloadIcon mr="10px"/> Save Model
           </Button>
         </Card>
-
         <CardHeader>
           <Heading size='md' textAlign={"center"}>Analytics</Heading>
         </CardHeader>
-
-        <Flex justifyContent={"space-around"} alignItems={"center"} flexWrap={"wrap"}>
-          <Card maxW="40ch" m={2} p={3} minH="300px" alignItems={"center"} variant="filled">
+        <Flex justifyContent={"space-around"} flexWrap={"wrap"}>
+          <Card maxW="40ch" m={2} p={3} alignItems={"center"} variant="filled">
             <CardHeader p={0} mb={3}>
               <Heading size='md'> Commonly used words </Heading>
             </CardHeader>
@@ -158,9 +153,7 @@ function ModelDisplayArea(props) {
           </Card>
         </Flex>
         <Divider h={3} />
-
         </Card>
-
       {
         props.status && <StatusBox status={props.status}/>
       }

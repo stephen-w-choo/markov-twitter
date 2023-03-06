@@ -5,9 +5,9 @@ import React, { useState } from "react";
 import { Button, ChakraProvider, Container, FormLabel, Input, } from '@chakra-ui/react'
 
 import TitleBar from './components/TitleBar';
-import ModelDisplayArea from './components/ModelDisplayArea';
+import ModelDisplayArea from './sections/ModelDisplayArea';
 import StartScreen from './components/StartScreen';
-import TweetDisplayArea from './components/TweetDisplayArea';
+import TweetDisplayArea from './sections/TweetDisplayArea';
 
 // this file WILL eventually be refactored
 // I sincerely apologise for this mess
