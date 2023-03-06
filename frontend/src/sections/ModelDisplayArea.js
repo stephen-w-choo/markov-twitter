@@ -64,8 +64,8 @@ function ModelDisplayArea(props) {
               {`@${props.userModel.userHandle}`}
             </Heading>
             <Text fontSize='sm' m="5px 15px">Joined {props.userModel.userJoined}</Text>
-            <StatGroup justifyContent={"space-between"} maxW={"30ch"} textAlign={"center"}>
-              <Stat colorScheme={"twitter"} maxW={"10ch"}>
+            <StatGroup justifyContent={"space-between"} maxW={"30ch"} textAlign={"center"} flexWrap={"wrap"}>
+              <Stat colorScheme={"twitter"} m={1}>
                 <StatNumber fontSize="sm">
                   {twitterNumber(props.userModel.userMetrics.tweet_count)}
                 </StatNumber>
@@ -73,7 +73,7 @@ function ModelDisplayArea(props) {
                   tweets
                 </StatHelpText>
               </Stat>
-              <Stat colorScheme={"twitter"} maxW={"10ch"}>
+              <Stat colorScheme={"twitter"} m={1}>
                 <StatNumber fontSize="sm">
                   {twitterNumber(props.userModel.userMetrics.following_count)}
                 </StatNumber>
@@ -81,7 +81,7 @@ function ModelDisplayArea(props) {
                   following
                 </StatHelpText>
               </Stat>
-              <Stat colorScheme={"twitter"} maxW={"10ch"}>
+              <Stat colorScheme={"twitter"} m={1}>
                 <StatNumber fontSize="sm">
                   {twitterNumber(props.userModel.userMetrics.followers_count)}
                 </StatNumber>
