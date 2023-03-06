@@ -1,10 +1,8 @@
 import './css/App.css';
-import './css/fonts.css';
-import './css/start.css';
 import './css/model.css';
 import './css/tweet.css';
 import React, { useState } from "react";
-import { Button, ChakraProvider, Container, FormControl, FormLabel, Input, VisuallyHiddenInput } from '@chakra-ui/react'
+import { Button, ChakraProvider, Container, FormLabel, Input, } from '@chakra-ui/react'
 
 import TitleBar from './components/TitleBar';
 import ModelDisplayArea from './components/ModelDisplayArea';

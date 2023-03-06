@@ -81,7 +81,6 @@ def generate_tweets():
     if request.method == 'POST':
         res = []
         request_json = request.get_json()
-        print(request_json)
         text_model = markovify.Text.from_json(request_json["model"])
 
         # if "prompt" in request_json:
