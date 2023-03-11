@@ -1,6 +1,7 @@
 import './css/App.css';
 import './css/model.css';
 import './css/tweet.css';
+import './css/fonts.css';
 import React from "react";
 import { Card, ChakraProvider, Container } from '@chakra-ui/react'
 import TitleBar from './components/TitleBar';
