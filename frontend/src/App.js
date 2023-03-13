@@ -8,10 +8,6 @@ import TitleBar from './components/TitleBar';
 import Routes from './Routes';
 
 
-// this file WILL eventually be refactored
-// I sincerely apologise for this mess
-
-
 function App() {
   return (
     <ChakraProvider>
