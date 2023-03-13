@@ -4,9 +4,7 @@ import {
   Card,
   CardBody,
   Flex,
-  Heading,
   Image,
-  Link,
   Stack,
   StackDivider,
   Text
