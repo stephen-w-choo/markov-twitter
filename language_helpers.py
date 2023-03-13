@@ -11,7 +11,7 @@ def filter(string):
 def word_count(string):
     # Takes a string and returns the number of words in the string
     return len(string.split())
-    
+
 def string_to_date(date_string: str) -> datetime:
     # takes a date string and returns a datetime object
     return datetime.strptime(date_string, "%Y-%m-%dT%H:%M:%S.%fZ")

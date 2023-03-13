@@ -50,11 +50,12 @@ def markovify_user():
     # get the corpus, to be returned as a json object
     tweet_list, model_tweet_count, model_start_date, model_end_date= twitter_api_helpers.twitter_user_to_corpus(user_id, headers, payload, tweet_n)
     corpus = language_helpers.filter("\n".join(tweet_list))
+    print(corpus)
     model_word_count = len(corpus.split())
     word_cloud = data_processing.word_cloud(corpus)
     aggregate_sentiment = data_processing.aggregate_sentiment(tweet_list)
 
-    text_model = markovify.Text(corpus, retain_original=False)
+    text_model = markovify.NewlineText(corpus, retain_original=False)
     model_json = text_model.to_json()
 
     return jsonify(
@@ -81,8 +82,7 @@ def generate_tweets():
     if request.method == 'POST':
         res = []
         request_json = request.get_json()
-        print(request_json)
-        text_model = markovify.Text.from_json(request_json["model"])
+        text_model = markovify.NewlineText.from_json(request_json["model"])
 
         # if "prompt" in request_json:
         #     res.append

@@ -54,8 +54,6 @@ def twitter_json_to_string(list_of_tweet_objects: list): # -> tuple[str, int, st
     n_tweets = len(list_of_tweet_objects)
 
     for object in list_of_tweet_objects:
-        if object["text"][-1] != ".":
-            object["text"] += "."
         tweet_list.append(object["text"])
 
     startdate = string_to_date(list_of_tweet_objects[-1]["created_at"])
@@ -68,9 +66,9 @@ def twitter_user_to_corpus(user_id, headers, payload, tweet_pages=4):  # -> tupl
     url = timeline_url(user_id)
     api_response = request(payload, headers, url)
     full_list = paginate(api_response, headers, url, tweet_pages)
-    corpus, n_tweets, startdate, enddate = twitter_json_to_string(full_list)
+    tweet_list, n_tweets, startdate, enddate = twitter_json_to_string(full_list)
 
-    return (corpus, n_tweets, startdate, enddate)
+    return (tweet_list, n_tweets, startdate, enddate)
 
 def aggregate_sentiment(tweets):
     # Takes a list of tweets and returns the aggregate compounded sentiment
