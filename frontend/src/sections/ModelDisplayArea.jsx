@@ -41,9 +41,20 @@ function ModelDisplayArea(props) {
     }
   }
 
+  const dateConverter = (dateString) => {
+    // converts a string into a datetime object
+    // and returns a string in the format "MMM YYYY"
+
+    const date = new Date(dateString)
+
+    // get the month in a three letter format
+    const month = date.toLocaleString('default', { month: 'short' })
+    const year = date.getFullYear()
+    return `${month} ${year}`
+  }
+
   return (
     <div className="model-display-area">
-
       <Card
         overflow='hidden'
         variant='outline'
@@ -63,7 +74,7 @@ function ModelDisplayArea(props) {
             <Heading size='sm' m="5px 15px"color='blackAlpha.600'>
               {`@${props.userModel.userHandle}`}
             </Heading>
-            <Text fontSize='sm' m="5px 15px">Joined {props.userModel.userJoined}</Text>
+            <Text fontSize='sm' m="5px 15px">Joined {dateConverter(props.userModel.userJoined)}</Text>
             <StatGroup justifyContent={"space-between"} maxW={"30ch"} textAlign={"center"} flexWrap={"wrap"}>
               <Stat colorScheme={"twitter"} m={1}>
                 <StatNumber fontSize="sm">
@@ -116,13 +127,13 @@ function ModelDisplayArea(props) {
               Tweet Dates
             </StatLabel>
             <StatNumber fontSize="sm">
-              {props.userModel.modelDate[0]}
+              {dateConverter(props.userModel.modelDate[0])}
             </StatNumber>
             <StatHelpText mb={"0"}>
               to
             </StatHelpText>
             <StatNumber fontSize="sm">
-              {props.userModel.modelDate[1]}
+              {dateConverter(props.userModel.modelDate[1])}
             </StatNumber>
           </Stat>
         </StatGroup>

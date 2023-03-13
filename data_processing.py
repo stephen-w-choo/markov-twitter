@@ -4,6 +4,9 @@ nltk.download('stopwords')
 
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
+# class LanguageProcessors:
+    # singleton class to hold functions that process text data
+
 def word_frequency(text):
     # Takes a string and returns a dictionary of word frequencies
     words = text.split()
@@ -24,7 +27,7 @@ def word_frequency(text):
     return word_freq
 
 def top_twenty_words(word_freq):
-    # Takes a dictionary of word frequencies and returns a list of the top 20 words
+    # Takes a dictionary of word frequencies and returns a list of the top 25 words
     return sorted(word_freq, key=word_freq.get, reverse=True)[:25]
 
 def word_cloud(text):
@@ -58,7 +61,6 @@ def aggregate_sentiment(tweets):
     sid = SentimentIntensityAnalyzer()
     for tweet in tweets:
         sentiment_score = sid.polarity_scores(tweet)["compound"]
-
         # this feels so bad there has to be a better way
         for key in groups:
             if sentiment_score < key:

@@ -7,7 +7,6 @@ const Splash = lazy(() => import("./routes/Splash"));
 const MarkovApp = lazy(() => import("./routes/MarkovApp"));
 
 function AppRoutes() {
-
   return (
     <Router>
       <Suspense
@@ -21,7 +20,6 @@ function AppRoutes() {
         </Routes>
       </Suspense>
     </Router>
-
   )
 }
 
