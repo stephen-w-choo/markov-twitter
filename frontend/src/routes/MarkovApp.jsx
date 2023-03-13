@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { Button, ChakraProvider, Container, FormLabel, Input, } from '@chakra-ui/react'
-
+import { Button, FormLabel, Input, } from '@chakra-ui/react'
 import ModelDisplayArea from '../sections/ModelDisplayArea';
 import StartScreen from '../sections/StartScreen';
 import TweetDisplayArea from '../sections/TweetDisplayArea';
 
-function MarkovApp(){
 
+// this entire page is a mess and I apologise - trying to learn Redux to implement a proper state management system
+
+// WILL be refactored once I'm more comfortable with Redux
+
+
+
+function MarkovApp(){
   const primaryColor = "#1DA1F2"
   const [status, setStatus] = useState({
     message: null,

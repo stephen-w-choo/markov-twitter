@@ -17,7 +17,7 @@ import {
   Text,
  } from "@chakra-ui/react";
 import { ArrowBackIcon, DownloadIcon } from '@chakra-ui/icons'
-import StatusBox from "../components/StatusBox";
+import StatusBox from "./StatusBox";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import WordCloudBox from "./WordCloud";

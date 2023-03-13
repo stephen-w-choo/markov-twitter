@@ -14,7 +14,7 @@ import {
   Text,
   useMediaQuery } from "@chakra-ui/react";
 import { AtSignIcon } from '@chakra-ui/icons'
-import StatusBox from "./StatusBox";
+import StatusBox from "../sections/StatusBox";
 import TweetSlider from "./TweetSlider"
 
 library.add(fab)

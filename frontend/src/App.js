@@ -3,13 +3,9 @@ import './css/model.css';
 import './css/tweet.css';
 import './css/fonts.css';
 import React from "react";
-import { Box, Card, ChakraProvider, Container, Spacer } from '@chakra-ui/react'
+import { Box, ChakraProvider, Container } from '@chakra-ui/react'
 import TitleBar from './components/TitleBar';
 import Routes from './Routes';
-
-
-// this file WILL eventually be refactored
-// I sincerely apologise for this mess
 
 
 function App() {
