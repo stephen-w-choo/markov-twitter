@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, ChakraProvider, Container, FormLabel, Input, } from '@chakra-ui/react'
 
 import ModelDisplayArea from '../sections/ModelDisplayArea';
-import StartScreen from '../components/StartScreen';
+import StartScreen from '../sections/StartScreen';
 import TweetDisplayArea from '../sections/TweetDisplayArea';
 
 function MarkovApp(){
