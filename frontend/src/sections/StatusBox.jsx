@@ -8,7 +8,9 @@ function StatusBox(props) {
     <div className="loading-box">
       <FadeIn>
         {props.status.loading &&
-          <LoadingBar>{props.status.message}</LoadingBar>
+          <LoadingBar>
+            {props.status.message}
+          </LoadingBar>
         }
         {!props.status.loading && props.status.message &&
           <Alert
@@ -21,7 +23,6 @@ function StatusBox(props) {
             {props.status.message}
           </Alert>
         }
-
       </FadeIn>
     </div>
   )

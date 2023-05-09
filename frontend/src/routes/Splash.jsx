@@ -16,9 +16,7 @@ import languageModelImage from '../images/languagemodel.png';
 import generatedTweetsImage from '../images/generatedtweets.png';
 import FancyUnderline from "../components/FancyUnderline";
 import FlexWrapChild from "../components/FlexWrapChild";
-
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-
 import { Link } from "react-router-dom";
 
 

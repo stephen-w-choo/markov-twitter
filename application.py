@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import markovify
 from dotenv import load_dotenv
-import twitter_api_helpers
+from twitter_api_helpers import TwitterUser
 import language_helpers
 import data_processing
 import os
@@ -36,12 +36,12 @@ def markovify_user():
 
     try:
         #initialise twitter user object
-        user = twitter_api_helpers.TwitterUser(headers, username)
+        user = TwitterUser(headers, username)
     except:
         # returns error if the user is not found
         return 500
 
-    # get the corpus, to be returned as a json object
+    # get the corpus as a string
     tweet_list, model_start_date, model_end_date = user.get_tweet_corpus(tweet_n)
     corpus = language_helpers.filter("\n".join(tweet_list))
     model_word_count = len(corpus.split())
