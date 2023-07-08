@@ -3,6 +3,7 @@ import { Button, FormLabel, Input, } from '@chakra-ui/react'
 import ModelDisplayArea from '../sections/ModelDisplayArea';
 import StartScreen from '../sections/StartScreen';
 import TweetDisplayArea from '../sections/TweetDisplayArea';
+import InactivePopUp from '../sections/InactivePopUp';
 
 
 // this entire page is a mess and I apologise - trying to learn Redux to implement a proper state management system
@@ -185,6 +186,7 @@ function MarkovApp(){
 
   return (
     <div>
+      <InactivePopUp />
       { !userModel.user && // show the start screen if there is no user
         <StartScreen
           userModel = {userModel}
