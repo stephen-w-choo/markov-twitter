@@ -1,0 +1,41 @@
+name: Deploy React frontend only
+
+on:
+  # Triggers the workflow on push or pull request events to the main branch
+  push:
+    branches: [main]
+  # Allows manual triggering of the workflow
+  workflow_dispatch:
+
+# Sets the necessary permissions for the workflow
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Manages concurrency to avoid redundant deployments
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Specifies the environment and sets the URL of the deployed page
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build React App
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: frontend/build # The folder the action should deploy.
