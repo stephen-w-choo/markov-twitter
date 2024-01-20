@@ -10,8 +10,6 @@ import InactivePopUp from '../sections/InactivePopUp';
 
 // WILL be refactored once I'm more comfortable with Redux
 
-
-
 function MarkovApp(){
   const primaryColor = "#1DA1F2"
   const [status, setStatus] = useState({
