@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button, FormLabel, Input, } from '@chakra-ui/react'
 import ModelDisplayArea from '../sections/ModelDisplayArea';
 import TweetDisplayArea from '../sections/TweetDisplayArea';
 import { useNavigate} from 'react-router-dom'
@@ -90,7 +89,12 @@ function DemoApp({demoModel}){
           exportToJson={exportToJson}
         />
       }
-      <TweetDisplayArea key={tweetKey} tweets={tweets} userModel={userModel} generateTweets={generateTweets}/>
+      <TweetDisplayArea 
+        key={tweetKey} 
+        tweets={tweets} 
+        userModel={userModel} 
+        generateTweets={generateTweets}
+      />
     </div>
   );
 }
