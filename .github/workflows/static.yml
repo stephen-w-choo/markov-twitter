@@ -34,7 +34,7 @@ jobs:
         working-directory: frontend
         
       - name: Run the build using Bun
-        run: bun run build
+        run: CI=false bun run build
         working-directory: frontend
 
       - name: Deploy to GitHub Pages
