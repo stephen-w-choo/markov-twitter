@@ -22,9 +22,6 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import InactivePopUp from "../sections/InactivePopUp";
 
-
-
-
 function Splash(){
 
   return (
@@ -48,6 +45,11 @@ function Splash(){
           <Link to={"markov"}>
             <Button colorScheme="teal" p={4}>
               <Heading size="md">Make a language model</Heading>
+            </Button>
+          </Link>
+          <Link to={"demo"}>
+            <Button colorScheme="teal" p={4}>
+              <Heading size="md">View demo</Heading>
             </Button>
           </Link>
           <StackDivider />
