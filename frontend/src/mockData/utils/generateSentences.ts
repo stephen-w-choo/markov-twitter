@@ -1,6 +1,6 @@
-import { AdjList, State, deserialiseState, serialiseState } from "./parseModel"
+import { AdjList, State, deserialiseState, serialiseState } from "./parseModel.ts"
 
-function buildSentence(
+export function buildSentence(
     adjList: AdjList,
 ) {
     /* 

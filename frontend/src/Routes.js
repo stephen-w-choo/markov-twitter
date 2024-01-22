@@ -1,11 +1,12 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoadingBar from './components/LoadingBar';
-import ObamaModel from './mockData/BarackObama_model.json';
+import ObamaModel from './mockData/BarackObamaRecreatedModel.json';
 
 const Splash = lazy(() => import("./routes/Splash"));
 const MarkovApp = lazy(() => import("./routes/MarkovApp"));
 const DemoApp = lazy(() => import("./routes/DemoApp"));
+// const ObamaModel = lazy(() => import("./mockData/BarackObamaRecreatedModel.json"));
 
 function AppRoutes() {
   console.log(ObamaModel)

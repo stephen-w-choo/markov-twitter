@@ -7,6 +7,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 library.add(fab)
 
 function TweetDisplayArea(props) {
+  console.log("tweets loaded")
   return (
     <div>
       { props.tweets.length > 0 &&
