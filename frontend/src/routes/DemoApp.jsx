@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import ModelDisplayArea from '../sections/ModelDisplayArea';
 import TweetDisplayArea from '../sections/TweetDisplayArea';
-import { useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { buildSentence } from "../mockData/utils/generateSentences.ts";
 
 
 function DemoApp({demoModel}){
@@ -24,32 +25,47 @@ function DemoApp({demoModel}){
     setTweetKey(tweetKey + 1) // this is a bit of a hacky way to force the tweet display area to remount and trigger the fadein animation
   }, [tweets])
 
+  React.useEffect(() => { // generates tweets when the page is loaded
+    if (userModel.currentModel) { 
+      generateTweets() 
+    }         
+  }, [])
+
+  const generateTweetList = async () => {
+    let res = []
+    for (let i = 0; i < 5; i++) {
+      res.push(buildSentence(userModel.currentModel))
+    }
+
+    return res
+  }
+
   const generateTweets = (event) => {
-    // setStatus({
-    //   loading: true,
-    //   message: "Generating tweets...",
-    //   show: true,
-    //   error: false
-    // })
-    // generateTweetsFromDemoModel()
-    // .then( (response) => {
-    //   setStatus({
-    //     message: null,
-    //     loading: false,
-    //     show: false,
-    //     error: false,
-    //   })
-    //   setTweets(response.tweets)
-    // })
-    // .catch( (error) => {
-    //   setTweets([])
-    //   setStatus({
-    //     message: "Error generating tweets",
-    //     loading: false,
-    //     show: false,
-    //     error: true
-    //   })
-    // })
+    setStatus({
+      loading: true,
+      message: "Generating tweets...",
+      show: true,
+      error: false
+    })
+    generateTweetList()
+      .then( (response) => {
+        setStatus({
+          message: null,
+          loading: false,
+          show: false,
+          error: false,
+        })
+        setTweets(response)
+      })
+    .catch( (error) => {
+      setTweets([])
+      setStatus({
+        message: "Error generating tweets",
+        loading: false,
+        show: false,
+        error: true
+      })
+    })
   }
 
   const downloadFile = ({ data, fileName, fileType }) => {
